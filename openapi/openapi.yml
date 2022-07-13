@@ -1,0 +1,69 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Open API for Interoperable Traceability
+  description: Identifier and Credentials APIs for DID.
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: https://api.did.actor
+
+tags:
+  - name: Discovery
+  - name: Identifiers
+  - name: Credentials
+  - name: Presentations
+
+paths:
+  /did.json:
+    $ref: './resources/api-configuration.yml'
+
+  /identifiers/{did}:
+    $ref: './resources/did.yml'
+
+  /credentials/issue:
+    $ref: './resources/credential-issuer.yml'
+  /credentials/status:
+    $ref: './resources/credential-status.yml'
+  /credentials/verify:
+    $ref: './resources/credential-verifier.yml'
+  /credentials/{credential-id}:
+    $ref: './resources/credential.yml'
+
+  /presentations:
+    $ref: './resources/presentations.yml'
+  /presentations/prove:
+    $ref: './resources/presentation-prover.yml'
+  /presentations/verify:
+    $ref: './resources/presentation-verifier.yml'
+  /presentations/available:
+    $ref: './resources/presentation-available.yml'
+  /presentations/submissions:
+    $ref: './resources/presentation-submissions.yml'
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          authorizationUrl: https://example.com/authorize
+          tokenUrl: https://example.com/oauth/token
+          redirectUri: 'http://localhost:5000/oauth2-redirect.html'
+          scopes:
+            'resolve:dids': Grants permission to resolve DIDs
+            'issue:credentials': Grants permission issue Verifiable Credentials
+            'verify:credentials': Grants permission verify Verifiable Credentials
+            'read:credentials': Grants permission to get Verifiable Credentials
+            'update:credentials': Grants permission to update the status of Verifiable Credentials
+            'prove:presentations': Grants permission to prove Verifiable Presentations
+            'verify:presentations': Grants permission verify Verifiable Presentations
+            'submit:presentations': Grants permission to submit Verifiable Presentations
+  parameters:
+    $ref: './parameters/_index.yml'
+  schemas:
+    $ref: './schemas/_index.yml'
+  responses:
+    $ref: './responses/_index.yml'

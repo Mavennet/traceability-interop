@@ -1,0 +1,41 @@
+post:
+  summary: Create
+  operationId: provePresentation
+  description: Create a presentation
+  tags:
+    - Presentations
+  security:
+    - OAuth2:
+        - 'prove:presentations'
+  requestBody:
+    description: Parameters for creating the presentation.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            presentation:
+              $ref: "../schemas/Presentation.yml"
+            options:
+              allOf:
+                - $ref: "../schemas/PresentationOptions.yml"
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      description: A linked data suite proof type
+                      enum: ["Ed25519Signature2018", "JsonWebSignature2020"]
+                      example: "JsonWebSignature2020"
+  responses:
+    "201":
+      description: Expected response to a valid request
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/SerializedVerifiablePresentation.yml"
+    '401':
+      $ref: '../responses/Unauthenticated.yml'
+    '403':
+      $ref: '../responses/Unauthorized.yml'
+    default:
+      $ref: "../responses/UnexpectedError.yml"
