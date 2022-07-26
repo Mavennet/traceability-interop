@@ -36,7 +36,6 @@
         "tags": [
           "Discovery"
         ],
-        "security": [],
         "responses": {
           "200": {
             "description": "Expected response to a valid request",
@@ -47,10 +46,25 @@
                   "type": "object",
                   "properties": {
                     "@context": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "uniqueItems": true,
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "object"
+                              }
+                            ]
+                          }
+                        }
+                      ]
                     },
                     "id": {
                       "type": "string"
@@ -397,6 +411,9 @@
                           },
                           {
                             "type": "object",
+                            "required": [
+                              "id"
+                            ],
                             "properties": {
                               "id": {
                                 "description": "The IRI identifying the Issuer",
@@ -536,6 +553,9 @@
                                 },
                                 {
                                   "type": "object",
+                                  "required": [
+                                    "id"
+                                  ],
                                   "properties": {
                                     "id": {
                                       "description": "The IRI identifying the Issuer",
@@ -1089,6 +1109,9 @@
                                   },
                                   {
                                     "type": "object",
+                                    "required": [
+                                      "id"
+                                    ],
                                     "properties": {
                                       "id": {
                                         "description": "The IRI identifying the Issuer",
@@ -1251,24 +1274,61 @@
                     "verified": {
                       "type": "boolean"
                     },
-                    "checks": {
+                    "verifications": {
                       "type": "array",
                       "items": {
-                        "type": "string"
-                      }
-                    },
-                    "warnings": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
+                        "title": "Verification",
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "enum": [
+                              "Proof",
+                              "Activation",
+                              "Expired",
+                              "Revocation"
+                            ]
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "good",
+                              "bad"
+                            ]
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "status"
+                        ],
+                        "example": {
+                          "title": "Activation",
+                          "status": "good",
+                          "description": "This credential activated 2 weeks ago"
+                        }
                       }
                     }
+                  },
+                  "required": [
+                    "verified"
+                  ],
+                  "example": {
+                    "verified": true,
+                    "verifications": [
+                      {
+                        "status": "good",
+                        "title": "Activation",
+                        "description": "This credential activated 2 weeks ago"
+                      },
+                      {
+                        "status": "good",
+                        "title": "Signature",
+                        "description": "did:key:ni5kvh48ZRcVN2gfs6cteK8M1JzJdcwcYJak5R7VkhXeqsHn#z6Mkvh48ZRcVN2gfs6cteK8M1JzJdcwcYJak5R7VkhXeqsHn"
+                      }
+                    ]
                   }
                 }
               }
@@ -1402,6 +1462,7 @@
           "Credentials"
         ],
         "security": [
+          {},
           {
             "OAuth2": [
               "read:credentials"
@@ -1465,6 +1526,9 @@
                             },
                             {
                               "type": "object",
+                              "required": [
+                                "id"
+                              ],
                               "properties": {
                                 "id": {
                                   "description": "The IRI identifying the Issuer",
@@ -1807,6 +1871,9 @@
                                     },
                                     {
                                       "type": "object",
+                                      "required": [
+                                        "id"
+                                      ],
                                       "properties": {
                                         "id": {
                                           "description": "The IRI identifying the Issuer",
@@ -2211,6 +2278,9 @@
                                         },
                                         {
                                           "type": "object",
+                                          "required": [
+                                            "id"
+                                          ],
                                           "properties": {
                                             "id": {
                                               "description": "The IRI identifying the Issuer",
@@ -2395,6 +2465,9 @@
                         "title": "Prove Presentation Options",
                         "type": "object",
                         "description": "Options for proving a verifiable presentation",
+                        "required": [
+                          "challenge"
+                        ],
                         "properties": {
                           "domain": {
                             "type": "string",
@@ -2514,6 +2587,9 @@
                                               },
                                               {
                                                 "type": "object",
+                                                "required": [
+                                                  "id"
+                                                ],
                                                 "properties": {
                                                   "id": {
                                                     "description": "The IRI identifying the Issuer",
@@ -3067,6 +3143,9 @@
                                                 },
                                                 {
                                                   "type": "object",
+                                                  "required": [
+                                                    "id"
+                                                  ],
                                                   "properties": {
                                                     "id": {
                                                       "description": "The IRI identifying the Issuer",
@@ -3402,6 +3481,9 @@
                     "title": "Prove Presentation Options",
                     "type": "object",
                     "description": "Options for proving a verifiable presentation",
+                    "required": [
+                      "challenge"
+                    ],
                     "properties": {
                       "domain": {
                         "type": "string",
@@ -3434,24 +3516,61 @@
                     "verified": {
                       "type": "boolean"
                     },
-                    "checks": {
+                    "verifications": {
                       "type": "array",
                       "items": {
-                        "type": "string"
-                      }
-                    },
-                    "warnings": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
+                        "title": "Verification",
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "enum": [
+                              "Proof",
+                              "Activation",
+                              "Expired",
+                              "Revocation"
+                            ]
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "good",
+                              "bad"
+                            ]
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "status"
+                        ],
+                        "example": {
+                          "title": "Activation",
+                          "status": "good",
+                          "description": "This credential activated 2 weeks ago"
+                        }
                       }
                     }
+                  },
+                  "required": [
+                    "verified"
+                  ],
+                  "example": {
+                    "verified": true,
+                    "verifications": [
+                      {
+                        "status": "good",
+                        "title": "Activation",
+                        "description": "This credential activated 2 weeks ago"
+                      },
+                      {
+                        "status": "good",
+                        "title": "Signature",
+                        "description": "did:key:ni5kvh48ZRcVN2gfs6cteK8M1JzJdcwcYJak5R7VkhXeqsHn#z6Mkvh48ZRcVN2gfs6cteK8M1JzJdcwcYJak5R7VkhXeqsHn"
+                      }
+                    ]
                   }
                 }
               }
@@ -3584,7 +3703,6 @@
         "tags": [
           "Presentations"
         ],
-        "security": [],
         "requestBody": {
           "description": "Description of the flow",
           "content": {
@@ -3709,7 +3827,6 @@
         "tags": [
           "Presentations"
         ],
-        "security": [],
         "requestBody": {
           "description": "A Verifiable Presentation to Store",
           "content": {
@@ -3789,6 +3906,9 @@
                                         },
                                         {
                                           "type": "object",
+                                          "required": [
+                                            "id"
+                                          ],
                                           "properties": {
                                             "id": {
                                               "description": "The IRI identifying the Issuer",
@@ -4087,24 +4207,61 @@
                     "verified": {
                       "type": "boolean"
                     },
-                    "checks": {
+                    "verifications": {
                       "type": "array",
                       "items": {
-                        "type": "string"
-                      }
-                    },
-                    "warnings": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
+                        "title": "Verification",
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "enum": [
+                              "Proof",
+                              "Activation",
+                              "Expired",
+                              "Revocation"
+                            ]
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "good",
+                              "bad"
+                            ]
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "status"
+                        ],
+                        "example": {
+                          "title": "Activation",
+                          "status": "good",
+                          "description": "This credential activated 2 weeks ago"
+                        }
                       }
                     }
+                  },
+                  "required": [
+                    "verified"
+                  ],
+                  "example": {
+                    "verified": true,
+                    "verifications": [
+                      {
+                        "status": "good",
+                        "title": "Activation",
+                        "description": "This credential activated 2 weeks ago"
+                      },
+                      {
+                        "status": "good",
+                        "title": "Signature",
+                        "description": "did:key:ni5kvh48ZRcVN2gfs6cteK8M1JzJdcwcYJak5R7VkhXeqsHn#z6Mkvh48ZRcVN2gfs6cteK8M1JzJdcwcYJak5R7VkhXeqsHn"
+                      }
+                    ]
                   }
                 }
               }
