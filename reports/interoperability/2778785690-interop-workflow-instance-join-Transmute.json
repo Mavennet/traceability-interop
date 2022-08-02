@@ -1,0 +1,2254 @@
+{
+  "collection": {
+    "info": {
+      "_postman_id": "c0814470-0c07-43ad-9ed4-2ad4b125c937",
+      "name": "Workflow Instance Join",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "id": "ea4f1bcb-9f33-4bcb-98f5-f927bec5df99",
+        "name": "Get Access Token",
+        "request": {
+          "url": {
+            "host": [
+              "{{ORG_1_TOKEN_ENDPOINT}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"audience\": \"{{ORG_1_TOKEN_AUDIENCE}}\",\n    \"client_id\": \"{{ORG_1_CLIENT_ID}}\",\n    \"client_secret\": \"{{ORG_1_CLIENT_SECRET}}\",\n    \"grant_type\": \"client_credentials\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "b6c5dd68-06d5-4e7a-8a8f-4557bbb7909e",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Importer application has access token\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"`org_1_access_token` persisted to collectionVariables\", function() {",
+                "    const { access_token } = pm.response.json()",
+                "    pm.collectionVariables.set(\"org_1_access_token\", access_token);",
+                "});",
+                "",
+                ""
+              ],
+              "_lastExecutionId": "940e3c03-1732-40e2-b969-419ebd9c862d"
+            }
+          }
+        ]
+      },
+      {
+        "id": "4b4f53b5-1281-4b61-9810-3b4c9338cc1d",
+        "name": "Get Access Token",
+        "request": {
+          "url": {
+            "host": [
+              "{{ORG_2_TOKEN_ENDPOINT}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"audience\": \"{{ORG_2_TOKEN_AUDIENCE}}\",\n    \"client_id\": \"{{ORG_2_CLIENT_ID}}\",\n    \"client_secret\": \"{{ORG_2_CLIENT_SECRET}}\",\n    \"grant_type\": \"client_credentials\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "9b145718-ce47-4095-9978-3e788725b9a6",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Importer application has access token\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"`org_2_access_token` persisted to collectionVariables\", function() {",
+                "    const { access_token } = pm.response.json()",
+                "    pm.collectionVariables.set(\"org_2_access_token\", access_token);",
+                "});",
+                "",
+                ""
+              ],
+              "_lastExecutionId": "0862f675-84b4-4582-9eb7-2a9fdc431be3"
+            }
+          }
+        ]
+      },
+      {
+        "id": "7dab24b6-07dd-4989-96f3-7dc811f981ee",
+        "name": "Get Access Token",
+        "request": {
+          "url": {
+            "host": [
+              "{{ORG_3_TOKEN_ENDPOINT}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"audience\": \"{{ORG_3_TOKEN_AUDIENCE}}\",\n    \"client_id\": \"{{ORG_3_CLIENT_ID}}\",\n    \"client_secret\": \"{{ORG_3_CLIENT_SECRET}}\",\n    \"grant_type\": \"client_credentials\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "f5b3a0a1-9dc3-4200-a58a-4a6ab078d773",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Importer application has access token\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"`org_3_access_token` persisted to collectionVariables\", function() {",
+                "    const { access_token } = pm.response.json()",
+                "    pm.collectionVariables.set(\"org_3_access_token\", access_token);",
+                "});",
+                "",
+                ""
+              ],
+              "_lastExecutionId": "f7d4694b-4baf-4c7d-a172-50eb09da20aa"
+            }
+          }
+        ]
+      },
+      {
+        "id": "fb3f5ef2-a878-4aa0-90aa-201389e1e89f",
+        "name": "Get Organization DIDs",
+        "request": {
+          "url": {
+            "path": [
+              "identifiers",
+              "{{ORG_1_DID_WEB}}"
+            ],
+            "host": [
+              "{{ORG_1_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "GET",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_1_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "f75d3533-d621-4ba6-a367-fc5d586095a2",
+              "type": "text/javascript",
+              "exec": [
+                "const { didDocument } = pm.response.json()",
+                "pm.collectionVariables.set(\"org_1_holder\", didDocument.alsoKnownAs[1]);",
+                "pm.collectionVariables.set(\"org_1_tenant_url\", didDocument.service[0].serviceEndpoint);",
+                "",
+                "pm.test(\"Importer has holder DID\", function () {",
+                "     pm.expect(pm.collectionVariables.get(\"org_1_holder\")).to.not.be.undefined;",
+                "});",
+                "",
+                "pm.test(\"Importer has service endpoint\", function () {",
+                "     pm.expect(pm.collectionVariables.get(\"org_1_tenant_url\")).to.not.be.undefined;",
+                "});"
+              ],
+              "_lastExecutionId": "d5d59ef4-f28e-4551-8395-40a3f3dab4d8"
+            }
+          }
+        ]
+      },
+      {
+        "id": "429f5a02-676a-4f53-8152-f64bc78aaed7",
+        "name": "Get Organization DIDs",
+        "request": {
+          "url": {
+            "path": [
+              "identifiers",
+              "{{ORG_2_DID_WEB}}"
+            ],
+            "host": [
+              "{{ORG_2_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "GET",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_2_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "2f07724f-0e03-4d72-9ca2-326291727fd9",
+              "type": "text/javascript",
+              "exec": [
+                "const { didDocument } = pm.response.json()",
+                "pm.collectionVariables.set(\"org_2_holder\", didDocument.alsoKnownAs[1]);",
+                "pm.collectionVariables.set(\"org_2_tenant_url\", didDocument.service[0].serviceEndpoint);",
+                "",
+                "pm.test(\"Freight Forwarder has holder DID\", function () {",
+                "     pm.expect(pm.collectionVariables.get(\"org_2_holder\")).to.not.be.undefined;",
+                "});",
+                "",
+                "pm.test(\"Freight Forwarder has service endpoint\", function () {",
+                "     pm.expect(pm.collectionVariables.get(\"org_2_tenant_url\")).to.not.be.undefined;",
+                "});"
+              ],
+              "_lastExecutionId": "945e7a88-ed27-4a29-a6c1-cf39e2ed2578"
+            }
+          }
+        ]
+      },
+      {
+        "id": "4455ac5d-0f9e-45bc-9106-f2c5e92db541",
+        "name": "Get Organization DIDs",
+        "request": {
+          "url": {
+            "path": [
+              "identifiers",
+              "{{ORG_3_DID_WEB}}"
+            ],
+            "host": [
+              "{{ORG_3_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "GET",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_3_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "c34c1f18-713a-467e-9048-3f9f01ec3cea",
+              "type": "text/javascript",
+              "exec": [
+                "const { didDocument } = pm.response.json()",
+                "pm.collectionVariables.set(\"org_3_holder\", didDocument.alsoKnownAs[0]);",
+                "pm.collectionVariables.set(\"org_3_tenant_url\", didDocument.service[0].serviceEndpoint);",
+                "",
+                "pm.test(\"Customs has holder DID\", function () {",
+                "     pm.expect(pm.collectionVariables.get(\"org_3_holder\")).to.not.be.undefined;",
+                "});",
+                "",
+                "pm.test(\"Customs has service endpoint\", function () {",
+                "     pm.expect(pm.collectionVariables.get(\"org_3_tenant_url\")).to.not.be.undefined;",
+                "});"
+              ],
+              "_lastExecutionId": "c033ad95-95d7-447f-81ab-9a98123f1375"
+            }
+          }
+        ]
+      },
+      {
+        "id": "a6f0fa60-6666-43c9-802e-ba26a8f10e35",
+        "name": "Issue Credential",
+        "request": {
+          "url": {
+            "path": [
+              "credentials",
+              "issue"
+            ],
+            "host": [
+              "{{ORG_1_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"credential\": {\n        \"@context\": [\n            \"https://www.w3.org/2018/credentials/v1\",\n            \"https://w3id.org/traceability/v1\"\n        ],\n        \"type\": [\n            \"VerifiableCredential\",\n            \"CommercialInvoiceCertificate\"\n        ],\n        \"name\": \"Commercial Invoice Certificate\",\n        \"issuanceDate\": \"2022-02-23T11:55:00Z\",\n        \"issuer\": {\n            \"id\": \"{{org_1_holder}}\",\n            \"type\": [\n                \"Organization\"\n            ],\n            \"address\": {\n                \"type\": [\n                    \"PostalAddress\"\n                ],\n                \"organizationName\": \"Aishi Metal Shinzo Co., Ltd.\",\n                \"streetAddress\": \"1651, Shimonakano, Yoshida\",\n                \"addressLocality\": \"Tsubame-shi\",\n                \"addressRegion\": \"Niigata-ken\",\n                \"postalCode\": \"959-0215\",\n                \"addressCountry\": \"Japan\"\n            }\n        },\n        \"credentialSubject\": {\n            \"type\": [\n                \"Invoice\"\n            ],\n            \"portOfEntry\": {\n                \"type\": \"Place\",\n                \"unLocode\": \"USLGB\"\n            },\n            \"destinationCountry\": \"MEX\",\n            \"purchaseDate\": \"2021-02-21\",\n            \"seller\": {\n                \"type\": [\n                    \"Organization\"\n                ],\n                \"address\": {\n                    \"type\": [\n                        \"PostalAddress\"\n                    ],\n                    \"organizationName\": \"Aishi Metal Shinzo Co., Ltd.\",\n                    \"streetAddress\": \"1651, Shimonakano, Yoshida\",\n                    \"addressLocality\": \"Tsubame-shi\",\n                    \"addressRegion\": \"Niigata-ken\",\n                    \"postalCode\": \"959-0215\",\n                    \"addressCountry\": \"Japan\"\n                }\n            },\n            \"buyer\": {\n                \"type\": [\n                    \"Organization\"\n                ],\n                \"address\": {\n                    \"type\": [\n                        \"PostalAddress\"\n                    ],\n                    \"organizationName\": \"Generic Motors of America\",\n                    \"streetAddress\": \"12 Generic Motors Dr\",\n                    \"addressLocality\": \"Detroit\",\n                    \"addressRegion\": \"Michigain\",\n                    \"postalCode\": \"48232-5170\",\n                    \"addressCountry\": \"USA\"\n                }\n            },\n            \"shipToParty\": {\n                \"type\": [\n                    \"Organization\"\n                ],\n                \"address\": {\n                    \"type\": [\n                        \"PostalAddress\"\n                    ],\n                    \"organizationName\": \"Generic Motors of America\",\n                    \"streetAddress\": \"12 Generic Motors Dr\",\n                    \"addressLocality\": \"Detroit\",\n                    \"addressRegion\": \"Michigain\",\n                    \"postalCode\": \"48232-5170\",\n                    \"addressCountry\": \"USA\"\n                }\n            },\n            \"itemsShipped\": [\n                {\n                    \"type\": \"TradeLineItem\",\n                    \"product\": {\n                        \"manufacturer\": {\n                            \"type\": \"Organization\",\n                            \"address\": {\n                                \"type\": \"PostalAddress\",\n                                \"organizationName\": \"Aishi Metal Shinzo Co., Ltd.\",\n                                \"streetAddress\": \"1651, Shimonakano, Yoshida\",\n                                \"addressLocality\": \"Tsubame-shi\",\n                                \"addressRegion\": \"Niigata-ken\",\n                                \"postalCode\": \"959-0215\",\n                                \"addressCountry\": \"Japan\"\n                            }\n                        },\n                        \"description\": \"UNS S30400 chromium-nickel stainless steel rolls.\",\n                        \"weight\": {\n                            \"type\": \"QuantitativeValue\",\n                            \"unitCode\": \"lbs\",\n                            \"value\": \"16500\"\n                        }\n                    },\n                    \"itemCount\": 5,\n                    \"tradeLineItemWeight\": {\n                        \"type\": \"QuantitativeValue\",\n                        \"value\": \"82500\",\n                        \"unitCode\": \"lbs\"\n                    },\n                    \"priceSpecification\": {\n                        \"type\": \"PriceSpecification\",\n                        \"price\": 5200,\n                        \"priceCurrency\": \"USD\"\n                    }\n                },\n                {\n                    \"type\": \"TradeLineItem\",\n                    \"product\": {\n                        \"manufacturer\": {\n                            \"type\": \"Organization\",\n                            \"address\": {\n                                \"type\": \"PostalAddress\",\n                                \"organizationName\": \"Aishi Metal Shinzo Co., Ltd.\",\n                                \"streetAddress\": \"1651, Shimonakano, Yoshida\",\n                                \"addressLocality\": \"Tsubame-shi\",\n                                \"addressRegion\": \"Niigata-ken\",\n                                \"postalCode\": \"959-0215\",\n                                \"addressCountry\": \"Japan\"\n                            }\n                        },\n                        \"description\": \"Galvalannealed ASTM A-653 zinc-iron alloy-coated steel sheets.\",\n                        \"weight\": {\n                            \"type\": \"QuantitativeValue\",\n                            \"value\": \"12680\",\n                            \"unitCode\": \"lbs\"\n                        }\n                    },\n                    \"itemCount\": 20,\n                    \"tradeLineItemWeight\": {\n                        \"type\": \"QuantitativeValue\",\n                        \"value\": \"253600\",\n                        \"unitCode\": \"lbs\"\n                    },\n                    \"priceSpecification\": {\n                        \"type\": \"PriceSpecification\",\n                        \"price\": 4400,\n                        \"priceCurrency\": \"USD\"\n                    }\n                }\n            ],\n            \"totalWeight\": {\n                \"type\": \"QuantitativeValue\",\n                \"value\": \"336100\",\n                \"unitCode\": \"lbs\"\n            },\n            \"totalPaymentDue\": {\n                \"type\": \"PriceSpecification\",\n                \"price\": 9600,\n                \"priceCurrency\": \"USD\"\n            }\n        }\n    }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_1_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "543d881c-e9ed-40b2-a3b6-e09aca3f36e8",
+              "type": "text/javascript",
+              "exec": [
+                "  pm.test(\"Proforma Invoice VC issued\", function () {",
+                "      pm.response.to.have.status(201);",
+                "      pm.collectionVariables.set('importers_proforma_invoice_vc', JSON.stringify(pm.response.json()));",
+                "  })"
+              ],
+              "_lastExecutionId": "876ecc87-0a90-402c-919d-eb6d7032a0fe"
+            }
+          }
+        ]
+      },
+      {
+        "id": "1a46e736-a8b5-4796-8fea-cc628648fdca",
+        "name": "Initiate Exchange",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "available"
+            ],
+            "host": [
+              "{{org_3_tenant_url}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"query\": [\n    {\n      \"type\": \"QueryByExample\",\n      \"credentialQuery\": [\n        {\n          \"type\": [\n            \"VerifiableCredential\"\n          ],\n          \"reason\": \"We want to present credentials.\"\n        }\n      ]\n    }\n  ]\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "8a9565c3-c212-4df9-8fab-8e09d5cbd024",
+              "type": "text/javascript",
+              "exec": [
+                "const responseJson = pm.response.json();",
+                "pm.collectionVariables.set(\"org_3_domain\", responseJson.domain);",
+                "pm.collectionVariables.set(\"org_3_challenge\", responseJson.challenge);",
+                "",
+                "pm.test(\"Importer has authenticated to Customs\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});"
+              ],
+              "_lastExecutionId": "7b75f7a2-a9c0-49dc-a459-138a70090863"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "eff7e562-ac75-49f8-bdd2-be615c5fa52d",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "59eeff22-c2e9-4865-8a24-e14010bbfed5"
+            }
+          }
+        ]
+      },
+      {
+        "id": "2308a24d-0b14-4ff9-b0fb-e6b995f6b7ab",
+        "name": "Sign Presentation",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "prove"
+            ],
+            "host": [
+              "{{ORG_1_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"presentation\": {\n        \"@context\": [\n            \"https://www.w3.org/2018/credentials/v1\",\n            \"https://w3id.org/traceability/v1\"\n        ],\n        \"type\": [\n            \"VerifiablePresentation\",\n            \"TraceablePresentation\"\n        ],\n        \"workflow\": {\n            \"instance\": [\n                \"instance_1\"\n            ],\n            \"definition\": [\n                \"definition_1\"\n            ]\n        },\n        \"holder\": \"{{org_1_holder}}\",\n        \"verifiableCredential\": [\n            {{importers_proforma_invoice_vc}}\n        ]\n    },\n    \"options\": {\n        \"domain\": \"{{org_3_domain}}\",\n        \"challenge\": \"{{org_3_challenge}}\"\n    }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_1_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "82b1d355-d1c6-412d-9386-94eb526a25df",
+              "type": "text/javascript",
+              "exec": [
+                "const responseJson = pm.response.json();",
+                "pm.collectionVariables.set(\"importers_proforma_invoice_presented_to_customs\", JSON.stringify(responseJson));",
+                "",
+                "pm.test(\"Importer VP of Proforma Invoice with workflow instance 'instance_1' proved\", function () {",
+                "    pm.response.to.have.status(201);",
+                "});"
+              ],
+              "_lastExecutionId": "429c9054-28a6-406a-b039-1c17a154449a"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "1f772ee8-6a57-4bff-be0f-12722b606378",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "76b4319b-377f-4f75-bd90-76b1c6c384ac"
+            }
+          }
+        ]
+      },
+      {
+        "id": "589b01fa-5f5c-4715-9a23-2acf0d60cc23",
+        "name": "Complete Exchange",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "submissions"
+            ],
+            "host": [
+              "{{org_3_tenant_url}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{{importers_proforma_invoice_presented_to_customs}}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "9b053fc7-7e3d-47ac-89c0-5a133d0edcd0",
+              "type": "text/javascript",
+              "exec": [
+                "",
+                "// The expected response code for a \"Verify Presentation\" request is",
+                "// `200 Success`.",
+                "pm.test(\"Importer has successfully presented Proforma Invoice to Customs\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// Response should confirm the presentation is verified.",
+                "pm.test(\"Proforma Invoice VP verification returned 'true'\", function() {",
+                "    const { verified } = pm.response.json()",
+                "    pm.expect(verified).to.be.true;",
+                "});"
+              ],
+              "_lastExecutionId": "3c064276-c819-44b8-b331-4e175c1f9df1"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "3c518323-a6da-41b2-8d85-166612214da3",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "15cbb638-7fa2-4cbc-b46b-e72080db5e71"
+            }
+          }
+        ]
+      },
+      {
+        "id": "668f5993-22ed-410b-a5ed-4f599e96cfb0",
+        "name": "Verify Credential",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "verify"
+            ],
+            "host": [
+              "{{ORG_3_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"verifiablePresentation\": {{importers_proforma_invoice_presented_to_customs}},\n    \"options\": {\n        \"domain\": \"{{org_3_domain}}\",\n        \"challenge\": \"{{org_3_challenge}}\"\n    }\n}\n",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_3_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "46a350a9-a4e3-45e0-abd4-1e60d7a41c28",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Customs verifies Proforma Invoice\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "var workflowInstances = JSON.parse(pm.collectionVariables.get(\"importers_proforma_invoice_presented_to_customs\")).workflow.instance",
+                "",
+                "pm.test(\"Customs stores first workflow instance id: \" + workflowInstances[0], function () {",
+                "    pm.collectionVariables.set(\"customs_first_workflow_instance_id\", workflowInstances[0]);",
+                "});",
+                "",
+                ""
+              ],
+              "_lastExecutionId": "2e777cba-3dee-490f-86d6-bb1e8f0aee49"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ed4cb214-2c6d-45cd-8454-6481a69152da",
+        "name": "Issue Credential",
+        "request": {
+          "url": {
+            "path": [
+              "credentials",
+              "issue"
+            ],
+            "host": [
+              "{{ORG_2_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"credential\": {\n        \"@context\": [\n            \"https://www.w3.org/2018/credentials/v1\",\n            \"https://w3id.org/traceability/v1\"\n        ],\n        \"id\": \"did:key:z6MkmbqKc6KncFZUbVJwUppttTkiMAtnVJ5wzC5oVBWci3pc\",\n        \"type\": [\n            \"VerifiableCredential\",\n            \"HouseBillOfLadingCertificate\"\n        ],\n        \"name\": \"House Bill Of Lading\",\n        \"issuanceDate\": \"2022-03-04T13:40:00Z\",\n        \"issuer\": {\n            \"type\": \"Organization\",\n            \"id\": \"{{org_2_holder}}\",\n            \"name\": \"World Forward, Inc.\",\n            \"address\": {\n                \"type\": \"PostalAddress\",\n                \"organizationName\": \"MCL Multi Container Line LTD.\",\n                \"streetAddress\": \"Well Fung Ind Centre\",\n                \"addressLocality\": \"Kwai Chung\",\n                \"addressRegion\": \"Hong Kong\",\n                \"addressCountry\": \"Hong Kong\"\n            }\n        },\n        \"credentialSubject\": {\n            \"type\": \"HouseBillOfLading\",\n            \"billOfLadingNumber\": \"FF873363210A\",\n            \"bookingNumber\": [\n                \"FF873363210\"\n            ],\n            \"shipper\": {\n                \"type\": \"Organization\",\n                \"name\": \"Espresso Italiano Co.\",\n                \"address\": {\n                    \"type\": \"PostalAddress\",\n                    \"streetAddress\": \"Via Vico Ferrovia 5\",\n                    \"addressLocality\": \"Goro\",\n                    \"addressRegion\": \"Ferrara\",\n                    \"postalCode\": \"44020\",\n                    \"addressCountry\": \"IT\"\n                },\n                \"email\": \"sales@espresso-italiano.example.com\",\n                \"phoneNumber\": \"+39 0351 9067195\"\n            },\n            \"consignee\": {\n                \"type\": \"Organization\",\n                \"name\": \"Prosumer Coffee Supplies, Ltd.\",\n                \"description\": \"Coffee Machine Imports\",\n                \"address\": {\n                    \"type\": \"PostalAddress\",\n                    \"streetAddress\": \"3934 Spinnaker Lane\",\n                    \"addressLocality\": \"Joliet\",\n                    \"addressRegion\": \"Illinois\",\n                    \"postalCode\": \"60432\",\n                    \"addressCountry\": \"US\"\n                }\n            },\n            \"notifyParty\": [\n                {\n                    \"type\": \"Organization\",\n                    \"name\": \"Prosumer Coffee Supplies, Ltd.\",\n                    \"description\": \"Coffee Machine Imports\",\n                    \"address\": {\n                        \"type\": \"PostalAddress\",\n                        \"streetAddress\": \"3934 Spinnaker Lane\",\n                        \"addressLocality\": \"Joliet\",\n                        \"addressRegion\": \"Illinois\",\n                        \"postalCode\": \"60432\",\n                        \"addressCountry\": \"US\"\n                    }\n                }\n            ],\n            \"carrier\": {\n                \"type\": \"Organization\",\n                \"id\": \"did:key:z6MktHQo3fRRohk44dsbE76CuiTpBmyMWq2VVjvV6aBSeE3U\",\n                \"name\": \"World Forward, Inc.\",\n                \"address\": {\n                    \"type\": \"PostalAddress\",\n                    \"organizationName\": \"MCL Multi Container Line LTD.\",\n                    \"streetAddress\": \"Well Fung Ind Centre\",\n                    \"addressLocality\": \"Kwai Chung\",\n                    \"addressRegion\": \"Hong Kong\",\n                    \"addressCountry\": \"Hong Kong\"\n                }\n            },\n            \"mainCarriageTransportMovement\": {\n                \"type\": \"Transport\",\n                \"vesselNumber\": \"MS Seven Seas\",\n                \"voyageNumber\": \"Atl-W0425\"\n            },\n            \"portOfLoading\": {\n                \"type\": \"Place\",\n                \"unLocode\": \"ITMIL\"\n            },\n            \"portOfDischarge\": {\n                \"type\": \"Place\",\n                \"unLocode\": \"USLGB\"\n            },\n            \"totalNumberOfPackages\": 2200,\n            \"transportEquipmentQuantity\": 2,\n            \"includedConsignmentItems\": [\n                {\n                    \"marksAndNumbers\": \"Espresso Italiano\",\n                    \"commodity\": {\n                        \"type\": \"Commodity\",\n                        \"commodityCode\": \"851671\",\n                        \"commodityCodeType\": \"HS\"\n                    },\n                    \"packageQuantity\": 220,\n                    \"netWeight\": {\n                        \"type\": \"QuantitativeValue\",\n                        \"unitCode\": \"kg\",\n                        \"value\": \"1460\"\n                    },\n                    \"grossWeight\": {\n                        \"type\": \"QuantitativeValue\",\n                        \"unitCode\": \"kg\",\n                        \"value\": \"1590\"\n                    },\n                    \"grossVolume\": {\n                        \"type\": \"QuantitativeValue\",\n                        \"value\": \"85\",\n                        \"unitCode\": \"cmb\"\n                    }\n                }\n            ],\n            \"freightAndCharges\": {\n                \"type\": \"ServiceCharge\",\n                \"chargeCode\": \"basicFreight\",\n                \"paymentTerm\": \"collect\",\n                \"chargeText\": \"Negotiated ocean freight\",\n                \"rate\": {\n                    \"type\": \"PriceSpecification\",\n                    \"price\": 225,\n                    \"priceCurrency\": \"USD\"\n                },\n                \"calculationBasis\": \"Per container\",\n                \"appliedAmount\": {\n                    \"type\": \"PriceSpecification\",\n                    \"price\": 450,\n                    \"priceCurrency\": \"USD\"\n                }\n            },\n            \"declaredValue\": {\n                \"type\": \"PriceSpecification\",\n                \"price\": 24000,\n                \"priceCurrency\": \"USD\"\n            },\n            \"termsAndConditions\": \"https://terms-of-shipment.freightforwarder.example.com\"\n        }\n    }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_2_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "38514dae-98c3-4ab3-ae15-e6ec411a32b4",
+              "type": "text/javascript",
+              "exec": [
+                "  pm.test(\"House Bill of Lading VC issued\", function () {",
+                "      pm.response.to.have.status(201);",
+                "      pm.collectionVariables.set('freight_forwarders_hbol_vc', JSON.stringify(pm.response.json()));",
+                "  })"
+              ],
+              "_lastExecutionId": "51e4d162-d77c-433b-b8a2-65381be8b872"
+            }
+          }
+        ]
+      },
+      {
+        "id": "aa763750-133e-417d-af3a-7d9bf71cf602",
+        "name": "Initiate Exchange",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "available"
+            ],
+            "host": [
+              "{{org_3_tenant_url}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"query\": [\n    {\n      \"type\": \"QueryByExample\",\n      \"credentialQuery\": [\n        {\n          \"type\": [\n            \"VerifiableCredential\"\n          ],\n          \"reason\": \"We want to present credentials.\"\n        }\n      ]\n    }\n  ]\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "9e80b80c-7c89-4ade-befa-2bf5be47f021",
+              "type": "text/javascript",
+              "exec": [
+                "const responseJson = pm.response.json();",
+                "pm.collectionVariables.set(\"org_3_domain\", responseJson.domain);",
+                "pm.collectionVariables.set(\"org_3_challenge\", responseJson.challenge);",
+                "",
+                "pm.test(\"Freight Forwarder has authenticated to Customs\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});"
+              ],
+              "_lastExecutionId": "c85f8083-10f6-4969-a85b-5e71c3ffba7e"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "76d8b1a0-0aa7-44fe-8bbb-f4e9dc0dc19a",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "21653728-3a7e-4e1c-8db0-11ed93b2e2fb"
+            }
+          }
+        ]
+      },
+      {
+        "id": "92128310-4f51-4432-b09a-9c927714096c",
+        "name": "Sign Presentation",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "prove"
+            ],
+            "host": [
+              "{{ORG_2_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"presentation\": {\n        \"@context\": [\n            \"https://www.w3.org/2018/credentials/v1\",\n            \"https://w3id.org/traceability/v1\"\n        ],\n        \"type\": [\n            \"VerifiablePresentation\",\n            \"TraceablePresentation\"\n        ],\n        \"workflow\": {\n            \"instance\": [\n                \"instance_2\"\n            ],\n            \"definition\": [\n                \"definition_1\"\n            ]\n        },\n        \"holder\": \"{{org_2_holder}}\",\n        \"verifiableCredential\": [\n            {{freight_forwarders_hbol_vc}}\n        ]\n    },\n    \"options\": {\n        \"domain\": \"{{org_3_domain}}\",\n        \"challenge\": \"{{org_3_challenge}}\"\n    }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_2_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "e1b0da54-e66c-476d-9f30-1a21cb5ac7f6",
+              "type": "text/javascript",
+              "exec": [
+                "const responseJson = pm.response.json();",
+                "pm.collectionVariables.set(\"freight_forwarders_house_bill_presented_to_customs\", JSON.stringify(responseJson));",
+                "",
+                "pm.test(\"Freight Forwarder VP of House Bill of Lading with workflow instance 'instance_2' proved\", function () {",
+                "    pm.response.to.have.status(201);",
+                "});"
+              ],
+              "_lastExecutionId": "a44139c1-f3af-42bf-90ab-0c0f78806c91"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "be951474-32d5-49bf-a5ae-08c10f111416",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "85dfc04b-917a-4db3-a079-8118d5509903"
+            }
+          }
+        ]
+      },
+      {
+        "id": "859eaca7-bf65-4238-ac5b-06cb3fa3d088",
+        "name": "Complete Exchange",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "submissions"
+            ],
+            "host": [
+              "{{org_3_tenant_url}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{{freight_forwarders_house_bill_presented_to_customs}}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "551ed3d9-0e70-4391-a747-833bc4d7c86b",
+              "type": "text/javascript",
+              "exec": [
+                "",
+                "// The expected response code for a \"Verify Presentation\" request is",
+                "// `200 Success`.",
+                "pm.test(\"Freight Forwarder has successfully presented House Bill of Lading to Customs\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// Response should confirm the presentation is verified.",
+                "pm.test(\"House Bill of Lading VP verification returned 'true'\", function() {",
+                "    const { verified } = pm.response.json()",
+                "    pm.expect(verified).to.be.true;",
+                "});"
+              ],
+              "_lastExecutionId": "793f2fce-ca4f-4769-8cb1-cae7b33199cf"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "60f4f1aa-30d9-42f0-bd42-0b80109ada66",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "c54f5504-8351-478d-b73c-7f6f3c164081"
+            }
+          }
+        ]
+      },
+      {
+        "id": "c5038a9a-eec6-47a6-9a6d-3428e8698860",
+        "name": "Verify Credential",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "verify"
+            ],
+            "host": [
+              "{{ORG_3_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"verifiablePresentation\": {{freight_forwarders_house_bill_presented_to_customs}},\n    \"options\": {\n        \"domain\": \"{{org_3_domain}}\",\n        \"challenge\": \"{{org_3_challenge}}\"\n    }\n}\n",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_3_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "55f652c2-4679-49ab-98a5-4c43f5277aec",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Customs verifies House Bill of Lading\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "var workflowInstances = JSON.parse(pm.collectionVariables.get(\"freight_forwarders_house_bill_presented_to_customs\")).workflow.instance",
+                "",
+                "pm.test(\"Customs stores first workflow instance id: \" + workflowInstances[0], function () {",
+                "    pm.collectionVariables.set(\"customs_second_workflow_instance_id\", workflowInstances[0]);",
+                "});",
+                ""
+              ],
+              "_lastExecutionId": "c95530ae-5fa0-4d1f-b59f-94f968505acf"
+            }
+          }
+        ]
+      },
+      {
+        "id": "31e23343-9541-416b-aca7-2c660ceca785",
+        "name": "Issue Credential",
+        "request": {
+          "url": {
+            "path": [
+              "credentials",
+              "issue"
+            ],
+            "host": [
+              "{{ORG_1_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"credential\": \n      {\n    \"@context\": [\n      \"https://www.w3.org/2018/credentials/v1\",\n      \"https://w3id.org/traceability/v1\"\n    ],\n    \"id\": \"did:key:z6MkhNsCYEQQWJdyAbfaMZHz4UG6UZoQUGot7z7tBNsbz1JG\",\n    \"type\": [\n      \"VerifiableCredential\",\n      \"CommercialInvoiceCertificate\"\n    ],\n    \"name\": \"Commercial Invoice Certificate\",\n    \"issuanceDate\": \"2022-02-23T11:55:00Z\",\n    \"issuer\": {\n      \"id\": \"{{org_1_holder}}\",\n      \"type\": [\n        \"Organization\"\n      ],\n      \"address\": {\n        \"type\": [\n          \"PostalAddress\"\n        ],\n        \"organizationName\": \"Aishi Metal Shinzo Co., Ltd.\",\n        \"streetAddress\": \"1651, Shimonakano, Yoshida\",\n        \"addressLocality\": \"Tsubame-shi\",\n        \"addressRegion\": \"Niigata-ken\",\n        \"postalCode\": \"959-0215\",\n        \"addressCountry\": \"Japan\"\n      }\n    },\n    \"credentialSubject\": {\n      \"type\": [\n        \"Invoice\"\n      ],\n      \"portOfEntry\": {\n        \"type\": \"Place\",\n        \"unLocode\": \"USLGB\"\n      },\n      \"destinationCountry\": \"MEX\",\n      \"purchaseDate\": \"2021-02-21\",\n      \"seller\": {\n        \"type\": [\n          \"Organization\"\n        ],\n        \"address\": {\n          \"type\": [\n            \"PostalAddress\"\n          ],\n          \"organizationName\": \"Aishi Metal Shinzo Co., Ltd.\",\n          \"streetAddress\": \"1651, Shimonakano, Yoshida\",\n          \"addressLocality\": \"Tsubame-shi\",\n          \"addressRegion\": \"Niigata-ken\",\n          \"postalCode\": \"959-0215\",\n          \"addressCountry\": \"Japan\"\n        }\n      },\n      \"buyer\": {\n        \"type\": [\n          \"Organization\"\n        ],\n        \"address\": {\n          \"type\": [\n            \"PostalAddress\"\n          ],\n          \"organizationName\": \"Generic Motors of America\",\n          \"streetAddress\": \"12 Generic Motors Dr\",\n          \"addressLocality\": \"Detroit\",\n          \"addressRegion\": \"Michigain\",\n          \"postalCode\": \"48232-5170\",\n          \"addressCountry\": \"USA\"\n        }\n      },\n      \"shipToParty\": {\n        \"type\": [\n          \"Organization\"\n        ],\n        \"address\": {\n          \"type\": [\n            \"PostalAddress\"\n          ],\n          \"organizationName\": \"Generic Motors of America\",\n          \"streetAddress\": \"12 Generic Motors Dr\",\n          \"addressLocality\": \"Detroit\",\n          \"addressRegion\": \"Michigain\",\n          \"postalCode\": \"48232-5170\",\n          \"addressCountry\": \"USA\"\n        }\n      },\n      \"itemsShipped\": [\n        {\n          \"type\": \"TradeLineItem\",\n          \"product\": {\n            \"manufacturer\": {\n              \"type\": \"Organization\",\n              \"address\": {\n                \"type\": \"PostalAddress\",\n                \"organizationName\": \"Aishi Metal Shinzo Co., Ltd.\",\n                \"streetAddress\": \"1651, Shimonakano, Yoshida\",\n                \"addressLocality\": \"Tsubame-shi\",\n                \"addressRegion\": \"Niigata-ken\",\n                \"postalCode\": \"959-0215\",\n                \"addressCountry\": \"Japan\"\n              }\n            },\n            \"description\": \"UNS S30400 chromium-nickel stainless steel rolls.\",\n            \"weight\": {\n              \"type\": \"QuantitativeValue\",\n              \"unitCode\": \"lbs\",\n              \"value\": \"16500\"\n            }\n          },\n          \"itemCount\": 5,\n          \"tradeLineItemWeight\": {\n            \"type\": \"QuantitativeValue\",\n            \"value\": \"82500\",\n            \"unitCode\": \"lbs\"\n          },\n          \"priceSpecification\": {\n            \"type\": \"PriceSpecification\",\n            \"price\": 5200,\n            \"priceCurrency\": \"USD\"\n          }\n        },\n        {\n          \"type\": \"TradeLineItem\",\n          \"product\": {\n            \"manufacturer\": {\n              \"type\": \"Organization\",\n              \"address\": {\n                \"type\": \"PostalAddress\",\n                \"organizationName\": \"Aishi Metal Shinzo Co., Ltd.\",\n                \"streetAddress\": \"1651, Shimonakano, Yoshida\",\n                \"addressLocality\": \"Tsubame-shi\",\n                \"addressRegion\": \"Niigata-ken\",\n                \"postalCode\": \"959-0215\",\n                \"addressCountry\": \"Japan\"\n              }\n            },\n            \"description\": \"Galvalannealed ASTM A-653 zinc-iron alloy-coated steel sheets.\",\n            \"weight\": {\n              \"type\": \"QuantitativeValue\",\n              \"value\": \"12680\",\n              \"unitCode\": \"lbs\"\n            }\n          },\n          \"itemCount\": 20,\n          \"tradeLineItemWeight\": {\n            \"type\": \"QuantitativeValue\",\n            \"value\": \"253600\",\n            \"unitCode\": \"lbs\"\n          },\n          \"priceSpecification\": {\n            \"type\": \"PriceSpecification\",\n            \"price\": 4400,\n            \"priceCurrency\": \"USD\"\n          }\n        }\n      ],\n      \"totalWeight\": {\n        \"type\": \"QuantitativeValue\",\n        \"value\": \"336100\",\n        \"unitCode\": \"lbs\"\n      },\n      \"totalPaymentDue\": {\n        \"type\": \"PriceSpecification\",\n        \"price\": 9600,\n        \"priceCurrency\": \"USD\"\n      }\n    }\n  }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_1_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "89ffb595-0c8e-439a-a0f2-60a0c0690cd2",
+              "type": "text/javascript",
+              "exec": [
+                "  pm.test(\"Commercial Invoice VC issued\", function () {",
+                "      pm.response.to.have.status(201);",
+                "      pm.collectionVariables.set('importers_commercial_invoice_vc', JSON.stringify(pm.response.json()));",
+                "  })"
+              ],
+              "_lastExecutionId": "519da355-86bb-4e72-99ff-96a9b2468ac9"
+            }
+          }
+        ]
+      },
+      {
+        "id": "492dadf8-814f-4507-b23c-c6f7949e44b0",
+        "name": "Initiate Exchange",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "available"
+            ],
+            "host": [
+              "{{org_2_tenant_url}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"query\": [\n    {\n      \"type\": \"QueryByExample\",\n      \"credentialQuery\": [\n        {\n          \"type\": [\n            \"VerifiableCredential\"\n          ],\n          \"reason\": \"We want to present credentials.\"\n        }\n      ]\n    }\n  ]\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "66397585-413c-438e-968b-53f2c9899d21",
+              "type": "text/javascript",
+              "exec": [
+                "const responseJson = pm.response.json();",
+                "pm.collectionVariables.set(\"org_2_domain\", responseJson.domain);",
+                "pm.collectionVariables.set(\"org_2_challenge\", responseJson.challenge);",
+                "",
+                "pm.test(\"Importer has authenticated to Freight Forwarder\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});"
+              ],
+              "_lastExecutionId": "8ef54e4c-9a9c-4390-b89c-b4310734496e"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "ce13f43a-1257-40eb-950b-cd129c5c73a7",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "05624a91-f694-4734-bae7-ef34f9075adf"
+            }
+          }
+        ]
+      },
+      {
+        "id": "67dfc3bd-8886-475d-9d9a-9736c4cfbc86",
+        "name": "Sign Presentation",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "prove"
+            ],
+            "host": [
+              "{{ORG_1_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"presentation\": {\n        \"@context\": [\n            \"https://www.w3.org/2018/credentials/v1\",\n            \"https://w3id.org/traceability/v1\"\n        ],\n        \"type\": [\n            \"VerifiablePresentation\",\n            \"TraceablePresentation\"\n        ],\n        \"workflow\": {\n            \"instance\": [\n                \"instance_1\"\n            ],\n            \"definition\": [\n                \"definition_1\"\n            ]\n        },\n        \"holder\": \"{{org_1_holder}}\",\n        \"verifiableCredential\": [\n            {{importers_commercial_invoice_vc}}\n        ]\n    },\n    \"options\": {\n        \"domain\": \"{{org_2_domain}}\",\n        \"challenge\": \"{{org_2_challenge}}\"\n    }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_1_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "9da48054-7c70-4fd8-86d3-1d496c06f11a",
+              "type": "text/javascript",
+              "exec": [
+                "const responseJson = pm.response.json();",
+                "pm.collectionVariables.set(\"importers_presentation_of_ci_to_freight_forwarder\", JSON.stringify(responseJson));",
+                "",
+                "pm.test(\"Importer VP of Commercial Invoice with workflow instance 'instance_1' proved\", function () {",
+                "    pm.response.to.have.status(201);",
+                "});"
+              ],
+              "_lastExecutionId": "8c0be5c1-1a9a-4a1d-adaf-03b7e3199559"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "9e949dfc-f388-40bd-910a-a5da529edba6",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "a8c939d3-f7e5-44e6-8d0d-7efee0357219"
+            }
+          }
+        ]
+      },
+      {
+        "id": "83bb302b-c078-4105-88ef-996105676527",
+        "name": "Complete Exchange",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "submissions"
+            ],
+            "host": [
+              "{{org_2_tenant_url}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{{importers_presentation_of_ci_to_freight_forwarder}}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "13e58ecb-f091-4b59-8284-7edf57a7269b",
+              "type": "text/javascript",
+              "exec": [
+                "",
+                "// The expected response code for a \"Verify Presentation\" request is",
+                "// `200 Success`.",
+                "pm.test(\"Importer has successfully presented Commercial Invoice to Customs\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// Response should confirm the presentation is verified.",
+                "pm.test(\"Commercial Invoice VP verification returned 'true'\", function() {",
+                "    const { verified } = pm.response.json()",
+                "    pm.expect(verified).to.be.true;",
+                "});"
+              ],
+              "_lastExecutionId": "710febf5-35ca-46cc-8699-762771dcb428"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "dbebe575-8fb6-4f36-b5df-402a48f4c3e2",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "29e195f8-659a-4507-9a15-2fc2e6f398ee"
+            }
+          }
+        ]
+      },
+      {
+        "id": "71c79877-ee25-4b4f-bd18-f4e268ff8f1b",
+        "name": "Initiate Exchange",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "available"
+            ],
+            "host": [
+              "{{org_3_tenant_url}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"query\": [\n    {\n      \"type\": \"QueryByExample\",\n      \"credentialQuery\": [\n        {\n          \"type\": [\n            \"VerifiableCredential\"\n          ],\n          \"reason\": \"We want to present credentials.\"\n        }\n      ]\n    }\n  ]\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "16eac006-8f9d-4eff-9e73-e9a0d7eb799e",
+              "type": "text/javascript",
+              "exec": [
+                "const responseJson = pm.response.json();",
+                "pm.collectionVariables.set(\"org_3_domain\", responseJson.domain);",
+                "pm.collectionVariables.set(\"org_3_challenge\", responseJson.challenge);",
+                "",
+                "pm.test(\"Freight Forwarder has authenticated to Customs\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});"
+              ],
+              "_lastExecutionId": "7206e29f-ad6a-4270-bd2b-1decf4f020f2"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "810f53fe-4915-45b9-9131-afdb897359ae",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "be572e14-6a4a-46c1-8514-461194e30ce8"
+            }
+          }
+        ]
+      },
+      {
+        "id": "b2343ecc-7585-4284-b457-0984b10990f9",
+        "name": "Sign Presentation",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "prove"
+            ],
+            "host": [
+              "{{ORG_2_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"presentation\": {\n        \"@context\": [\n            \"https://www.w3.org/2018/credentials/v1\",\n            \"https://w3id.org/traceability/v1\"\n        ],\n        \"type\": [\n            \"VerifiablePresentation\",\n            \"TraceablePresentation\"\n        ],\n        \"workflow\": {\n            \"instance\": [\n                \"instance_1\", \n                \"instance_2\"\n            ],\n            \"definition\": [\n                \"definition_1\"\n            ]\n        },\n        \"holder\": \"{{org_2_holder}}\",\n        \"verifiableCredential\": [\n            {{importers_commercial_invoice_vc}}\n        ]\n    },\n    \"options\": {\n        \"domain\": \"{{org_3_domain}}\",\n        \"challenge\": \"{{org_3_challenge}}\"\n    }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_2_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "cc2914a4-b1b6-4fa8-b2f5-3454e0822780",
+              "type": "text/javascript",
+              "exec": [
+                "const responseJson = pm.response.json();",
+                "pm.collectionVariables.set(\"freight_forwarders_presentation_of_ci_to_customs\", JSON.stringify(responseJson));",
+                "",
+                "pm.test(\"Freight Forwarder VP of Commercial Invoice with workflow instances 'instance_1' and 'instance_2' proved\", function () {",
+                "    pm.response.to.have.status(201);",
+                "});"
+              ],
+              "_lastExecutionId": "93fe4ba6-4123-46bb-83d2-815377453de2"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "51051acf-5c1e-49ae-94cf-13d0fef24ed3",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "33805705-01d3-47bb-a2ec-0aa9e4df507d"
+            }
+          }
+        ]
+      },
+      {
+        "id": "669311a9-6524-4383-bdb9-df8008f3351f",
+        "name": "Complete Exchange",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "submissions"
+            ],
+            "host": [
+              "{{org_3_tenant_url}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{{freight_forwarders_presentation_of_ci_to_customs}}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "8344f51e-97f1-415f-9af7-f42038482f2a",
+              "type": "text/javascript",
+              "exec": [
+                "",
+                "// The expected response code for a \"Verify Presentation\" request is",
+                "// `200 Success`.",
+                "pm.test(\"Freight Forwarder has successfully presented Commercial Invoice to Customs\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// Response should confirm the presentation is verified.",
+                "pm.test(\"Commercial Invoice VP verification returned 'true'\", function() {",
+                "    const { verified } = pm.response.json()",
+                "    pm.expect(verified).to.be.true;",
+                "});"
+              ],
+              "_lastExecutionId": "53cda7b7-19a6-47b7-bfed-005c6bbc8b6b"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "75e2012c-a401-45b5-8726-52ef391292a7",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "800fe794-1a26-4224-8862-1b6dbdb07160"
+            }
+          }
+        ]
+      },
+      {
+        "id": "038b6806-67d5-4dee-a001-fd09e3ce4aa8",
+        "name": "Join Workflow Graphs",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "verify"
+            ],
+            "host": [
+              "{{ORG_3_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"verifiablePresentation\": {{freight_forwarders_presentation_of_ci_to_customs}},\n    \"options\": {\n        \"domain\": \"{{org_3_domain}}\",\n        \"challenge\": \"{{org_3_challenge}}\"\n    }\n}\n",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{org_3_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "fc8ef196-6889-4cd5-9695-f6f4c6bd43fb",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Customs verifies Commercial Invoice\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "var workflowInstances = JSON.parse(pm.collectionVariables.get(\"freight_forwarders_presentation_of_ci_to_customs\")).workflow.instance",
+                "",
+                "pm.test(\"Customs checks known workflow instance ids and join the workflows\", function () {",
+                "    pm.expect(workflowInstances[0]).to.eql(pm.collectionVariables.get(\"customs_first_workflow_instance_id\"));",
+                "    pm.expect(workflowInstances[1]).to.eql(pm.collectionVariables.get(\"customs_second_workflow_instance_id\"));",
+                "});",
+                ""
+              ],
+              "_lastExecutionId": "1aaadb90-72eb-4754-8560-3c3d29ad4dd0"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 24,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 36,
+        "pending": 0,
+        "failed": 14
+      },
+      "prerequests": {
+        "total": 24,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 24,
+        "pending": 0,
+        "failed": 24
+      },
+      "tests": {
+        "total": 24,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 20,
+        "pending": 0,
+        "failed": 20
+      },
+      "testScripts": {
+        "total": 24,
+        "pending": 0,
+        "failed": 14
+      },
+      "prerequestScripts": {
+        "total": 12,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 0,
+      "responseMin": 0,
+      "responseMax": 0,
+      "responseSd": 0,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1659399884354,
+      "completed": 1659399884980
+    },
+    "executions": [
+      {
+        "id": "ea4f1bcb-9f33-4bcb-98f5-f927bec5df99",
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 24,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "386bb448-c501-4915-9d02-45c7b1c4a66f",
+          "httpRequestId": "f4754a26-7b47-4ac7-a6ae-3eb9e3b81715"
+        },
+        "item": {
+          "id": "ea4f1bcb-9f33-4bcb-98f5-f927bec5df99",
+          "name": "Get Access Token"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Importer application has access token",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Importer application has access token",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:1)"
+            }
+          },
+          {
+            "assertion": "`org_1_access_token` persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "`org_1_access_token` persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:1)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "4b4f53b5-1281-4b61-9810-3b4c9338cc1d",
+        "cursor": {
+          "ref": "ed2bc38d-1c40-4e72-8b70-ef4e578c6a4e",
+          "length": 24,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "d5a409ef-36b0-42cc-b65e-aea9a7f008d3"
+        },
+        "item": {
+          "id": "4b4f53b5-1281-4b61-9810-3b4c9338cc1d",
+          "name": "Get Access Token"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Importer application has access token",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Importer application has access token",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:2)"
+            }
+          },
+          {
+            "assertion": "`org_2_access_token` persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "`org_2_access_token` persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:2)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "7dab24b6-07dd-4989-96f3-7dc811f981ee",
+        "cursor": {
+          "ref": "e9ff15ec-8392-4a01-b40d-74dddb846cf6",
+          "length": 24,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "e2e56ab2-dc8d-40bb-a01d-0a5101edf85b"
+        },
+        "item": {
+          "id": "7dab24b6-07dd-4989-96f3-7dc811f981ee",
+          "name": "Get Access Token"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Importer application has access token",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Importer application has access token",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:3)"
+            }
+          },
+          {
+            "assertion": "`org_3_access_token` persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "`org_3_access_token` persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:3)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "fb3f5ef2-a878-4aa0-90aa-201389e1e89f",
+        "cursor": {
+          "ref": "28d81db1-37d2-48f6-afbb-e099d97da6b9",
+          "length": 24,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "7f29874d-aa77-46c1-ba12-4bdeadd1f99f"
+        },
+        "item": {
+          "id": "fb3f5ef2-a878-4aa0-90aa-201389e1e89f",
+          "name": "Get Organization DIDs"
+        },
+        "response": {}
+      },
+      {
+        "id": "429f5a02-676a-4f53-8152-f64bc78aaed7",
+        "cursor": {
+          "ref": "b2413e8b-e267-4b03-b1d4-b19b4146227e",
+          "length": 24,
+          "cycles": 1,
+          "position": 4,
+          "iteration": 0,
+          "httpRequestId": "4fbd227b-64d1-4207-8d69-5fd85926a928"
+        },
+        "item": {
+          "id": "429f5a02-676a-4f53-8152-f64bc78aaed7",
+          "name": "Get Organization DIDs"
+        },
+        "response": {}
+      },
+      {
+        "id": "4455ac5d-0f9e-45bc-9106-f2c5e92db541",
+        "cursor": {
+          "ref": "e38346da-2596-4cc5-90bc-db1970b97b0c",
+          "length": 24,
+          "cycles": 1,
+          "position": 5,
+          "iteration": 0,
+          "httpRequestId": "a01ef641-e6ce-48d9-ab66-7bf556ed4abb"
+        },
+        "item": {
+          "id": "4455ac5d-0f9e-45bc-9106-f2c5e92db541",
+          "name": "Get Organization DIDs"
+        },
+        "response": {}
+      },
+      {
+        "id": "a6f0fa60-6666-43c9-802e-ba26a8f10e35",
+        "cursor": {
+          "ref": "630d5ff0-fad3-45a8-b17c-40a45462de74",
+          "length": 24,
+          "cycles": 1,
+          "position": 6,
+          "iteration": 0,
+          "httpRequestId": "a42d16ac-8008-4164-8f50-481e93e04a77"
+        },
+        "item": {
+          "id": "a6f0fa60-6666-43c9-802e-ba26a8f10e35",
+          "name": "Issue Credential"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Proforma Invoice VC issued",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Proforma Invoice VC issued",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:7)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "1a46e736-a8b5-4796-8fea-cc628648fdca",
+        "cursor": {
+          "ref": "68ab837d-7ce5-475e-840b-b9bcebe209a0",
+          "length": 24,
+          "cycles": 1,
+          "position": 7,
+          "iteration": 0,
+          "httpRequestId": "7f143eee-77b1-4035-a69f-33785871f7b7"
+        },
+        "item": {
+          "id": "1a46e736-a8b5-4796-8fea-cc628648fdca",
+          "name": "Initiate Exchange"
+        },
+        "response": {}
+      },
+      {
+        "id": "2308a24d-0b14-4ff9-b0fb-e6b995f6b7ab",
+        "cursor": {
+          "ref": "5a4bd7c5-cd5b-436a-899e-336b7992ad78",
+          "length": 24,
+          "cycles": 1,
+          "position": 8,
+          "iteration": 0,
+          "httpRequestId": "02363d63-0834-4115-b060-25819c1a1181"
+        },
+        "item": {
+          "id": "2308a24d-0b14-4ff9-b0fb-e6b995f6b7ab",
+          "name": "Sign Presentation"
+        },
+        "response": {}
+      },
+      {
+        "id": "589b01fa-5f5c-4715-9a23-2acf0d60cc23",
+        "cursor": {
+          "ref": "81b3a778-7f97-4407-9422-0b98c6ac3f00",
+          "length": 24,
+          "cycles": 1,
+          "position": 9,
+          "iteration": 0,
+          "httpRequestId": "32f25473-05a7-4cb9-815f-768e1a9d3909"
+        },
+        "item": {
+          "id": "589b01fa-5f5c-4715-9a23-2acf0d60cc23",
+          "name": "Complete Exchange"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Importer has successfully presented Proforma Invoice to Customs",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Importer has successfully presented Proforma Invoice to Customs",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:10)"
+            }
+          },
+          {
+            "assertion": "Proforma Invoice VP verification returned 'true'",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "Proforma Invoice VP verification returned 'true'",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:10)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "668f5993-22ed-410b-a5ed-4f599e96cfb0",
+        "cursor": {
+          "ref": "bc4b7359-0873-48bc-b1ac-56c0f0caf983",
+          "length": 24,
+          "cycles": 1,
+          "position": 10,
+          "iteration": 0,
+          "httpRequestId": "a7e6f48c-ddf0-42a9-93c7-7e8820b393e9"
+        },
+        "item": {
+          "id": "668f5993-22ed-410b-a5ed-4f599e96cfb0",
+          "name": "Verify Credential"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Customs verifies Proforma Invoice",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Customs verifies Proforma Invoice",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:11)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ed4cb214-2c6d-45cd-8454-6481a69152da",
+        "cursor": {
+          "ref": "11085f1f-c8b8-4d98-8a7f-b351caf5561f",
+          "length": 24,
+          "cycles": 1,
+          "position": 11,
+          "iteration": 0,
+          "httpRequestId": "6a2127fa-ed26-4c83-b890-54572a9c05e3"
+        },
+        "item": {
+          "id": "ed4cb214-2c6d-45cd-8454-6481a69152da",
+          "name": "Issue Credential"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "House Bill of Lading VC issued",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "House Bill of Lading VC issued",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:12)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "aa763750-133e-417d-af3a-7d9bf71cf602",
+        "cursor": {
+          "ref": "5c1d639f-448a-41ee-8247-5ba4f7ff7a3d",
+          "length": 24,
+          "cycles": 1,
+          "position": 12,
+          "iteration": 0,
+          "httpRequestId": "7c942778-87aa-43e8-b2bc-242c22e26e61"
+        },
+        "item": {
+          "id": "aa763750-133e-417d-af3a-7d9bf71cf602",
+          "name": "Initiate Exchange"
+        },
+        "response": {}
+      },
+      {
+        "id": "92128310-4f51-4432-b09a-9c927714096c",
+        "cursor": {
+          "ref": "09e40c56-3953-4143-b3a2-f164185e34c7",
+          "length": 24,
+          "cycles": 1,
+          "position": 13,
+          "iteration": 0,
+          "httpRequestId": "17e97052-b191-4024-b649-a8e38551cd85"
+        },
+        "item": {
+          "id": "92128310-4f51-4432-b09a-9c927714096c",
+          "name": "Sign Presentation"
+        },
+        "response": {}
+      },
+      {
+        "id": "859eaca7-bf65-4238-ac5b-06cb3fa3d088",
+        "cursor": {
+          "ref": "baf0f8d3-261d-46e0-93db-f091f70812e4",
+          "length": 24,
+          "cycles": 1,
+          "position": 14,
+          "iteration": 0,
+          "httpRequestId": "8dff8f28-3700-474b-b081-3c7912485a29"
+        },
+        "item": {
+          "id": "859eaca7-bf65-4238-ac5b-06cb3fa3d088",
+          "name": "Complete Exchange"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Freight Forwarder has successfully presented House Bill of Lading to Customs",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Freight Forwarder has successfully presented House Bill of Lading to Customs",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:15)"
+            }
+          },
+          {
+            "assertion": "House Bill of Lading VP verification returned 'true'",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "House Bill of Lading VP verification returned 'true'",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:15)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "c5038a9a-eec6-47a6-9a6d-3428e8698860",
+        "cursor": {
+          "ref": "f92a034d-4575-49d0-9fdf-bc51ce34bb17",
+          "length": 24,
+          "cycles": 1,
+          "position": 15,
+          "iteration": 0,
+          "httpRequestId": "15e1cc3c-1d8a-41a5-9699-36214dc47343"
+        },
+        "item": {
+          "id": "c5038a9a-eec6-47a6-9a6d-3428e8698860",
+          "name": "Verify Credential"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Customs verifies House Bill of Lading",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Customs verifies House Bill of Lading",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:16)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "31e23343-9541-416b-aca7-2c660ceca785",
+        "cursor": {
+          "ref": "8289dfa4-0418-4208-aa0c-5634ae5ddd16",
+          "length": 24,
+          "cycles": 1,
+          "position": 16,
+          "iteration": 0,
+          "httpRequestId": "de2c9426-e43c-4867-b514-7892ea7ecc90"
+        },
+        "item": {
+          "id": "31e23343-9541-416b-aca7-2c660ceca785",
+          "name": "Issue Credential"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Commercial Invoice VC issued",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Commercial Invoice VC issued",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:17)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "492dadf8-814f-4507-b23c-c6f7949e44b0",
+        "cursor": {
+          "ref": "529f97ad-25ea-4df8-9ec6-f9f7af7a5655",
+          "length": 24,
+          "cycles": 1,
+          "position": 17,
+          "iteration": 0,
+          "httpRequestId": "ed9bcdd5-2233-4aad-b5bf-1d0b8971423f"
+        },
+        "item": {
+          "id": "492dadf8-814f-4507-b23c-c6f7949e44b0",
+          "name": "Initiate Exchange"
+        },
+        "response": {}
+      },
+      {
+        "id": "67dfc3bd-8886-475d-9d9a-9736c4cfbc86",
+        "cursor": {
+          "ref": "f39edfb4-668e-4782-9ace-239cc4415054",
+          "length": 24,
+          "cycles": 1,
+          "position": 18,
+          "iteration": 0,
+          "httpRequestId": "6499c499-fa9c-4838-a91c-8deb5b7af735"
+        },
+        "item": {
+          "id": "67dfc3bd-8886-475d-9d9a-9736c4cfbc86",
+          "name": "Sign Presentation"
+        },
+        "response": {}
+      },
+      {
+        "id": "83bb302b-c078-4105-88ef-996105676527",
+        "cursor": {
+          "ref": "51815d86-df1b-40e1-9df2-c0dc93f119d5",
+          "length": 24,
+          "cycles": 1,
+          "position": 19,
+          "iteration": 0,
+          "httpRequestId": "69fbb788-4a13-481f-9ba2-bad73d5bcbbb"
+        },
+        "item": {
+          "id": "83bb302b-c078-4105-88ef-996105676527",
+          "name": "Complete Exchange"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Importer has successfully presented Commercial Invoice to Customs",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Importer has successfully presented Commercial Invoice to Customs",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:20)"
+            }
+          },
+          {
+            "assertion": "Commercial Invoice VP verification returned 'true'",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "Commercial Invoice VP verification returned 'true'",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:20)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "71c79877-ee25-4b4f-bd18-f4e268ff8f1b",
+        "cursor": {
+          "ref": "89a64041-fbd9-47aa-ae95-a18e2c15d6b7",
+          "length": 24,
+          "cycles": 1,
+          "position": 20,
+          "iteration": 0,
+          "httpRequestId": "a9ad86ea-a53a-4b78-996b-e79f3a4eefd3"
+        },
+        "item": {
+          "id": "71c79877-ee25-4b4f-bd18-f4e268ff8f1b",
+          "name": "Initiate Exchange"
+        },
+        "response": {}
+      },
+      {
+        "id": "b2343ecc-7585-4284-b457-0984b10990f9",
+        "cursor": {
+          "ref": "7a08a0ba-4abd-42a1-977b-e8fa54161c48",
+          "length": 24,
+          "cycles": 1,
+          "position": 21,
+          "iteration": 0,
+          "httpRequestId": "c6a80b99-2c75-40b1-bccd-e7206623778e"
+        },
+        "item": {
+          "id": "b2343ecc-7585-4284-b457-0984b10990f9",
+          "name": "Sign Presentation"
+        },
+        "response": {}
+      },
+      {
+        "id": "669311a9-6524-4383-bdb9-df8008f3351f",
+        "cursor": {
+          "ref": "8c46a399-368c-4969-a680-259a4d0348a5",
+          "length": 24,
+          "cycles": 1,
+          "position": 22,
+          "iteration": 0,
+          "httpRequestId": "befc22a9-7bbe-477b-9205-b12dc14f3217"
+        },
+        "item": {
+          "id": "669311a9-6524-4383-bdb9-df8008f3351f",
+          "name": "Complete Exchange"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Freight Forwarder has successfully presented Commercial Invoice to Customs",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Freight Forwarder has successfully presented Commercial Invoice to Customs",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:23)"
+            }
+          },
+          {
+            "assertion": "Commercial Invoice VP verification returned 'true'",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "Commercial Invoice VP verification returned 'true'",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:23)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "038b6806-67d5-4dee-a001-fd09e3ce4aa8",
+        "cursor": {
+          "ref": "75d777cd-1117-4d6a-b0be-f8112cd09610",
+          "length": 24,
+          "cycles": 1,
+          "position": 23,
+          "iteration": 0,
+          "httpRequestId": "abc96a88-d4cb-4625-9b7b-9b78bddfa92e"
+        },
+        "item": {
+          "id": "038b6806-67d5-4dee-a001-fd09e3ce4aa8",
+          "name": "Join Workflow Graphs"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Customs verifies Commercial Invoice",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Customs verifies Commercial Invoice",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:24)"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
