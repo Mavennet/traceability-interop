@@ -1,0 +1,1552 @@
+{
+  "collection": {
+    "info": {
+      "_postman_id": "ed4b33c9-1d72-44ad-8d60-66332ebdcedd",
+      "name": "Presentations Verify Tutorial",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "id": "c6014181-b37a-4fea-a3b4-4e9ac661e857",
+        "name": "Get Access Token (Issuer)",
+        "request": {
+          "url": {
+            "host": [
+              "{{ISSUER_TOKEN_ENDPOINT}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "urlencoded",
+            "urlencoded": [
+              {
+                "key": "audience",
+                "value": "{{ISSUER_TOKEN_AUDIENCE}}"
+              },
+              {
+                "key": "client_id",
+                "value": "{{ISSUER_CLIENT_ID}}"
+              },
+              {
+                "key": "client_secret",
+                "value": "{{ISSUER_CLIENT_SECRET}}"
+              },
+              {
+                "key": "grant_type",
+                "value": "client_credentials"
+              },
+              {
+                "key": "scope",
+                "value": "resolve:dids issue:credentials prove:presentations"
+              }
+            ]
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "e98bcde4-6ea1-4366-816a-ed4df5500024",
+              "type": "text/javascript",
+              "exec": [
+                "// Token requests are expected to return a `200 Success` response code. Any",
+                "// other response code should trigger a failure.",
+                "pm.test(\"must return `200 Success` status\", function() {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// The response should include an `access_token` value - this will be presented",
+                "// to authenticated API endpoints in the `Authentication` header (see the last",
+                "// testing code block for details on how this is persisted).",
+                "pm.test(\"response body must include non-empty access_token\", function () {",
+                "    const { access_token } = pm.response.json()",
+                "    pm.expect(access_token).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// The type of `access_token` returned by the token request is expected to be",
+                "// `Bearer`.",
+                "pm.test(\"response body must represent `Bearer` token\", function() {",
+                "    const { token_type } = pm.response.json()",
+                "    pm.expect(token_type).to.equal(\"Bearer\");",
+                "});",
+                "",
+                "// The returned data includes an `expires_in` field that indicates time until",
+                "// token expiration. Validate that this value is a whole number greater than",
+                "// zero, as anything less than or equal to zero means that the `access_token`",
+                "// is already expired.",
+                "pm.test(\"returned token must expire in the future\", function() {",
+                "    const { expires_in } = pm.response.json()",
+                "    pm.expect(expires_in).to.be.above(0);",
+                "});",
+                "",
+                "// The returned `access_token` value is persisted as a Postman collection",
+                "// variable that can be accessed by other requests in the collection by calling",
+                "// `pm.collectionVariables.get(\"issuer_access_token\")`.",
+                "pm.test(\"`access_token` persisted to collectionVariables\", function() {",
+                "    const { access_token } = pm.response.json()",
+                "    pm.collectionVariables.set(\"issuer_access_token\", access_token);",
+                "});"
+              ],
+              "_lastExecutionId": "6cbed77d-486e-47d7-8c54-91462488c405"
+            }
+          }
+        ]
+      },
+      {
+        "id": "36535263-d890-4ea3-8509-99258391b99f",
+        "name": "Get Access Token (Verifier)",
+        "request": {
+          "url": {
+            "host": [
+              "{{VERIFIER_TOKEN_ENDPOINT}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "urlencoded",
+            "urlencoded": [
+              {
+                "key": "audience",
+                "value": "{{VERIFIER_TOKEN_AUDIENCE}}"
+              },
+              {
+                "key": "client_id",
+                "value": "{{VERIFIER_CLIENT_ID}}"
+              },
+              {
+                "key": "client_secret",
+                "value": "{{VERIFIER_CLIENT_SECRET}}"
+              },
+              {
+                "key": "grant_type",
+                "value": "client_credentials"
+              },
+              {
+                "key": "scope",
+                "value": "resolve:dids verify:presentations"
+              }
+            ]
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "ccdb2320-0dbc-4fb9-a226-430b9b2a6d58",
+              "type": "text/javascript",
+              "exec": [
+                "// Token requests are expected to return a `200 Success` response code. Any",
+                "// other response code should trigger a failure.",
+                "pm.test(\"must return `200 Success` status\", function() {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// The response should include an `access_token` value - this will be presented",
+                "// to authenticated API endpoints in the `Authentication` header (see the last",
+                "// testing code block for details on how this is persisted).",
+                "pm.test(\"response body must include non-empty access_token\", function () {",
+                "    const { access_token } = pm.response.json()",
+                "    pm.expect(access_token).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// The type of `access_token` returned by the token request is expected to be",
+                "// `Bearer`.",
+                "pm.test(\"response body must represent `Bearer` token\", function() {",
+                "    const { token_type } = pm.response.json()",
+                "    pm.expect(token_type).to.equal(\"Bearer\");",
+                "});",
+                "",
+                "// The returned data includes an `expires_in` field that indicates time until",
+                "// token expiration. Validate that this value is a whole number greater than",
+                "// zero, as anything less than or equal to zero means that the `access_token`",
+                "// is already expired.",
+                "pm.test(\"returned token must expire in the future\", function() {",
+                "    const { expires_in } = pm.response.json()",
+                "    pm.expect(expires_in).to.be.above(0);",
+                "});",
+                "",
+                "// The returned `access_token` value is persisted as a Postman collection",
+                "// variable that can be accessed by other requests in the collection by calling",
+                "// `pm.collectionVariables.get(\"verifier_access_token\")`.",
+                "pm.test(\"`access_token` persisted to collectionVariables\", function() {",
+                "    const { access_token } = pm.response.json()",
+                "    pm.collectionVariables.set(\"verifier_access_token\", access_token);",
+                "});"
+              ],
+              "_lastExecutionId": "798644d9-f712-42ad-8d23-1c681fca81c7"
+            }
+          }
+        ]
+      },
+      {
+        "id": "9f84b03a-b58c-45ad-810f-c6a6633d511f",
+        "name": "Get Organization DIDs (Issuer)",
+        "request": {
+          "url": {
+            "path": [
+              "identifiers",
+              "{{ISSUER_ORGANIZATION_DID_WEB}}"
+            ],
+            "host": [
+              "{{ISSUER_API_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "GET",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{issuer_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "526640d5-b137-4666-b39b-cd3309ce173d",
+              "type": "text/javascript",
+              "exec": [
+                "// This endpoint is authenticated. This test will not prevent the request from",
+                "// running when the `issuer_access_token` collection variable is missing, but it",
+                "// will give an indication of why the request failed in that scenario.",
+                "pm.test(\"`issuer_access_token` collection variable must be set\", function () {",
+                "    const issuer_access_token = pm.collectionVariables.get(\"issuer_access_token\");",
+                "    pm.expect(issuer_access_token).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "pm.test(\"Status code is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"must include valid JSON response body\", function() {",
+                "    pm.response.json(); // will throw on parse failure",
+                "});",
+                "",
+                "// The response JSON must include a didDocument property that contains the",
+                "// resolved DID document.",
+                "pm.test(\"didDocument must be present in response body\", function() {",
+                "    const jsonData = pm.response.json();",
+                "    pm.expect(jsonData).to.have.property('didDocument');",
+                "});",
+                "",
+                "// The DID document must contain an alsoKnownAs property.",
+                "pm.test(\"alsoKnownAs MUST be present\", function () {",
+                "    const { didDocument } = pm.response.json();",
+                "    pm.expect(didDocument).to.have.property('alsoKnownAs');",
+                "});",
+                "",
+                "// The alsoKnownAs property MUST be an array.",
+                "pm.test(\"alsoKnownAs MUST be an array\", function() {",
+                "    const { alsoKnownAs } = pm.response.json().didDocument;",
+                "    pm.expect(alsoKnownAs).to.be.an('array');",
+                "});",
+                "",
+                "// The alsoKnownAs property MUST be a set.",
+                "pm.test(\"alsoKnownAs values MUST be unique\", function() {",
+                "    const { alsoKnownAs } = pm.response.json().didDocument;",
+                "    pm.expect(new Set(alsoKnownAs)).to.have.lengthOf(alsoKnownAs.length);",
+                "});",
+                "",
+                "// The second element of the alsoKnownAs property will be used as a",
+                "// credentials_issuer_id for subsequent tests.",
+                "pm.test(\"alsoKnownAs[1] must be present\", function() {",
+                "    const { alsoKnownAs } = pm.response.json().didDocument;",
+                "    pm.expect(alsoKnownAs[1]).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// If a verificationMethod property is present, the controller property must",
+                "// match the didDocument.id property.",
+                "pm.test(\"verification method controller must match did subject\", function() {",
+                "    const { didDocument } = pm.response.json();",
+                "    const vm = didDocument.verificationMethod || [];",
+                "    vm.forEach((m) => pm.expect(m.controller).to.equal(didDocument.id));",
+                "});",
+                "",
+                "// The value of didDocument.alsoKnownAs[1] is persisted as a Postman collection",
+                "// variable that can be accessed by other requests in the collection by calling",
+                "// pm.collectionVariables.get(\"credential_issuer_id\").",
+                "pm.test(\"`credential_issuer_id` persisted to collectionVariables\", function() {",
+                "    const { alsoKnownAs } = pm.response.json().didDocument;",
+                "    pm.collectionVariables.set(\"credential_issuer_id\", alsoKnownAs[1]);",
+                "});"
+              ],
+              "_lastExecutionId": "fb2eed78-c513-4f1f-8c33-3194484068ed"
+            }
+          }
+        ],
+        "protocolProfileBehavior": {
+          "disabledSystemHeaders": {}
+        }
+      },
+      {
+        "id": "6ef8cc2b-ccf0-497e-b24d-cf3bc99d93c5",
+        "name": "Get Organization DIDs (Verifier)",
+        "request": {
+          "url": {
+            "path": [
+              "identifiers",
+              "{{VERIFIER_ORGANIZATION_DID_WEB}}"
+            ],
+            "host": [
+              "{{VERIFIER_API_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "GET",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{verifier_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "55b7f112-bede-41a1-8641-e266acd51636",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"Issuer makes unauthenticated discovery of verifiers exchange endpoint. `verifier_exchange_endpoint` is persisted to collectionVariables\", function() {",
+                "    const { service } = pm.response.json().didDocument;",
+                "    pm.collectionVariables.set(\"verifier_exchange_endpoint\", service[0].serviceEndpoint);",
+                "});",
+                "",
+                ""
+              ],
+              "_lastExecutionId": "8b665b73-8688-4f70-a6f8-c741aaba2c76"
+            }
+          }
+        ],
+        "protocolProfileBehavior": {
+          "disabledSystemHeaders": {}
+        }
+      },
+      {
+        "id": "3b3df016-62c5-41da-9119-b6d4e9d0a353",
+        "name": "Issue Credential",
+        "request": {
+          "url": {
+            "path": [
+              "credentials",
+              "issue"
+            ],
+            "host": [
+              "{{ISSUER_API_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"credential\": {\n        \"@context\": [\n            \"https://www.w3.org/2018/credentials/v1\"\n        ],\n        \"id\": \"urn:uuid:{{$randomUUID}}\",\n        \"type\": [\n            \"VerifiableCredential\"\n        ],\n        \"issuer\": \"{{credential_issuer_id}}\",\n        \"issuanceDate\": \"{{$isoTimestamp}}\",\n        \"credentialSubject\": {\n            \"id\": \"did:example:123\"\n        }\n    },\n    \"options\": {\n        \"type\": \"Ed25519Signature2018\",\n        \"created\": \"{{$isoTimestamp}}\"\n    }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{issuer_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "cece5976-96f1-46cb-8cff-62c6a490c217",
+              "type": "text/javascript",
+              "exec": [
+                "// This endpoint is authenticated. This test will not prevent the request from",
+                "// running when the `issuer_access_token` collection variable is missing, but it",
+                "// will give an indication of why the request failed in that scenario.",
+                "pm.test(\"`issuer_access_token` collection variable must be set\", function () {",
+                "    const issuer_access_token = pm.collectionVariables.get(\"issuer_access_token\");",
+                "    pm.expect(issuer_access_token).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "pm.test(\"`credential_issuer_id` collection variable must be set\", function () {",
+                "    const credential_issuer_id = pm.collectionVariables.get(\"credential_issuer_id\");",
+                "    pm.expect(credential_issuer_id).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "pm.test(\"must return `201 Created` status\", function () {",
+                "    pm.response.to.have.status(201);",
+                "});",
+                "",
+                "// Verifiable credential must be made available to later requests",
+                "pm.test(\"`verifiable_credential` persisted to collectionVariables\", function() {",
+                "    const verifiable_credential = JSON.stringify(pm.response.json());",
+                "    pm.collectionVariables.set(\"verifiable_credential\", verifiable_credential);",
+                "})"
+              ],
+              "_lastExecutionId": "906795bd-9a6f-4716-81ae-7e367a83b084"
+            }
+          },
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "fabc448a-3f03-4036-8370-60b2817551e8",
+              "type": "text/javascript",
+              "exec": [
+                ""
+              ],
+              "_lastExecutionId": "8e5c887e-1739-4ffc-828e-82c47b263e9f"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ffaded9d-9183-4f30-9492-5d6a38ed7a9c",
+        "name": "Initiate Exchange",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "available"
+            ],
+            "host": [
+              "{{verifier_exchange_endpoint}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"query\": [\n    {\n      \"type\": \"QueryByExample\",\n      \"credentialQuery\": [\n        {\n          \"type\": [\n            \"VerifiableCredential\"\n          ],\n          \"reason\": \"We want to present credentials.\"\n        }\n      ]\n    }\n  ]\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{verifier_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "e542b93e-911e-48e3-9397-992c7138230b",
+              "type": "text/javascript",
+              "exec": [
+                "// This endpoint is authenticated. This test will not prevent the request from",
+                "// running when the `verifier_access_token` collection variable is missing, but",
+                "// it will give an indication of why the request failed in that scenario.",
+                "pm.test(\"`verifier_access_token` collection variable must be set\", function () {",
+                "    const verifier_access_token = pm.collectionVariables.get(\"verifier_access_token\");",
+                "    pm.expect(verifier_access_token).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// The expected response code for a \"Presentations Available\" request is",
+                "// `200 Success`.",
+                "pm.test(\"must return `200 Success` status\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// The response body must include a \"domain\" property.",
+                "pm.test(\"response must include 'domain' property\", function() {",
+                "    const { domain } = pm.response.json()",
+                "    pm.expect(domain).to.be.a('string').that.is.not.empty;",
+                "    // Domain must be made available to later requests",
+                "    pm.collectionVariables.set(\"domain\", domain);",
+                "});",
+                "",
+                "// The response body must include a \"challenge\" property.",
+                "pm.test(\"response must include 'challenge' property\", function() {",
+                "    const { challenge } = pm.response.json()",
+                "    pm.expect(challenge).to.be.a('string').that.is.not.empty;",
+                "    // Challenge must be made available to later requests",
+                "    pm.collectionVariables.set(\"challenge\", challenge);",
+                "});",
+                ""
+              ],
+              "_lastExecutionId": "122fd610-a80c-4c12-8cf2-fcaeeb5ece69"
+            }
+          }
+        ]
+      },
+      {
+        "id": "99fb3c27-5a86-4bf1-852c-126d15873b69",
+        "name": "Sign Presentation",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "prove"
+            ],
+            "host": [
+              "{{ISSUER_API_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"presentation\": {\n        \"@context\": [\n            \"https://www.w3.org/2018/credentials/v1\"\n        ],\n        \"type\": [\n            \"VerifiablePresentation\"\n        ],\n        \"holder\": \"{{credential_issuer_id}}\",\n        \"verifiableCredential\": [\n            {{verifiable_credential}}\n        ]\n    },\n    \"options\": {\n        \"domain\": \"{{domain}}\",\n        \"challenge\": \"{{challenge}}\"\n    }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{issuer_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "ce2cefb4-7876-413c-9b8b-f3a7324ec0ee",
+              "type": "text/javascript",
+              "exec": [
+                "// This endpoint is authenticated. This test will not prevent the request from",
+                "// running when the `issuer_access_token` collection variable is missing, but it",
+                "// will give an indication of why the request failed in that scenario.",
+                "pm.test(\"`issuer_access_token` collection variable must be set\", function () {",
+                "    const issuer_access_token = pm.collectionVariables.get(\"issuer_access_token\");",
+                "    pm.expect(issuer_access_token).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// Credential issuer id is a required element item used in the request body",
+                "pm.test(\"`credential_issuer_id` collection variable must be set\", function () {",
+                "    const credential_issuer_id = pm.collectionVariables.get(\"credential_issuer_id\");",
+                "    pm.expect(credential_issuer_id).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// Verifiable credential is a required element item used in the request body",
+                "pm.test(\"`verifiable_credential` collection variable must be set\", function () {",
+                "    const verifiable_credential = pm.collectionVariables.get(\"verifiable_credential\");",
+                "    pm.expect(verifiable_credential).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// Domain is a required element item used in the request body",
+                "pm.test(\"`domain` collection variable must be set\", function () {",
+                "    const domain = pm.collectionVariables.get(\"domain\");",
+                "    pm.expect(domain).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// Challenge is a required element item used in the request body",
+                "pm.test(\"`challenge` collection variable must be set\", function () {",
+                "    const challenge = pm.collectionVariables.get(\"challenge\");",
+                "    pm.expect(challenge).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// The expected response code for a \"Sign Presentation\" request is",
+                "// `201 Success`.",
+                "pm.test(\"must return `201 Success` status\", function () {",
+                "    pm.response.to.have.status(201);",
+                "});",
+                "",
+                "// Verifiable presentation must be made available to later requests",
+                "pm.test(\"`verifiable_presentation` persisted to collectionVariables\", function() {",
+                "    const verifiable_presentation = JSON.stringify(pm.response.json());",
+                "    pm.collectionVariables.set(\"verifiable_presentation\", verifiable_presentation);",
+                "})"
+              ],
+              "_lastExecutionId": "316fc044-f1a7-41f9-b625-0e4a49beb37b"
+            }
+          }
+        ]
+      },
+      {
+        "id": "afacb22e-0c92-45f7-ac6a-29e9a67b7ff4",
+        "name": "Complete Exchange",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "submissions"
+            ],
+            "host": [
+              "{{verifier_exchange_endpoint}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{{verifiable_presentation}}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{verifier_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "9fe7cb00-e54f-4e2d-907f-bccba45e69e2",
+              "type": "text/javascript",
+              "exec": [
+                "// This endpoint is authenticated. This test will not prevent the request from",
+                "// running when the `verifier_access_token` collection variable is missing, but",
+                "// it will give an indication of why the request failed in that scenario.",
+                "pm.test(\"`verifier_access_token` collection variable must be set\", function () {",
+                "    const verifier_access_token = pm.collectionVariables.get(\"verifier_access_token\");",
+                "    pm.expect(verifier_access_token).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// The expected response code for a \"Complete Exchange\" request is",
+                "// `200 Success`.",
+                "pm.test(\"must return `200 Success` status\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// Response should confirm the submission is accepted.",
+                "pm.test(\"verification response should be 'true'\", function() {",
+                "    const { verified } = pm.response.json()",
+                "    pm.expect(verified).to.be.true;",
+                "});"
+              ],
+              "_lastExecutionId": "fa3b6b5a-a495-4742-8125-3f88ab480f52"
+            }
+          }
+        ]
+      },
+      {
+        "id": "506c0eaa-a471-4e29-8496-67e4bf8a26bb",
+        "name": "Verify Presentation",
+        "request": {
+          "url": {
+            "path": [
+              "presentations",
+              "verify"
+            ],
+            "host": [
+              "{{VERIFIER_API_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"verifiablePresentation\": {{verifiable_presentation}},\n    \"options\": {\n        \"domain\": \"{{domain}}\",\n        \"challenge\": \"{{challenge}}\"\n    }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{verifier_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "31bbefe6-f14c-4b92-9678-d95282a40b83",
+              "type": "text/javascript",
+              "exec": [
+                "// This endpoint is authenticated. This test will not prevent the request from",
+                "// running when the `verifier_access_token` collection variable is missing, but",
+                "// it will give an indication of why the request failed in that scenario.",
+                "pm.test(\"`verifier_access_token` collection variable must be set\", function () {",
+                "    const verifier_access_token = pm.collectionVariables.get(\"verifier_access_token\");",
+                "    pm.expect(verifier_access_token).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// Verifiable verifiable_presentation is a required element item used in the",
+                "// request body",
+                "pm.test(\"`verifiable_presentation` collection variable must be set\", function () {",
+                "    const verifiable_presentation = pm.collectionVariables.get(\"verifiable_presentation\");",
+                "    pm.expect(verifiable_presentation).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// Domain is a required element item used in the request body",
+                "pm.test(\"`domain` collection variable must be set\", function () {",
+                "    const domain = pm.collectionVariables.get(\"domain\");",
+                "    pm.expect(domain).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// Challenge is a required element item used in the request body",
+                "pm.test(\"`challenge` collection variable must be set\", function () {",
+                "    const challenge = pm.collectionVariables.get(\"challenge\");",
+                "    pm.expect(challenge).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// The expected response code for a \"Verify Presentation\" request is",
+                "// `200 Success`.",
+                "pm.test(\"must return `200 Success` status\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// Response should confirm the presentation is verified.",
+                "pm.test(\"verification response should be 'true'\", function() {",
+                "    const { verified } = pm.response.json()",
+                "    pm.expect(verified).to.be.true;",
+                "});"
+              ],
+              "_lastExecutionId": "5766e758-681f-4179-990f-36b6ae3b83ba"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 9,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 28,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequests": {
+        "total": 9,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 9,
+        "pending": 0,
+        "failed": 9
+      },
+      "tests": {
+        "total": 9,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 46,
+        "pending": 0,
+        "failed": 46
+      },
+      "testScripts": {
+        "total": 18,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequestScripts": {
+        "total": 10,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 0,
+      "responseMin": 0,
+      "responseMax": 0,
+      "responseSd": 0,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1661905782188,
+      "completed": 1661905782530
+    },
+    "executions": [
+      {
+        "id": "c6014181-b37a-4fea-a3b4-4e9ac661e857",
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 9,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "68d225b7-d7ef-4aaa-b0c7-7e963053ed24",
+          "httpRequestId": "f46ef7fe-b441-4597-99d3-62cf605cd030"
+        },
+        "item": {
+          "id": "c6014181-b37a-4fea-a3b4-4e9ac661e857",
+          "name": "Get Access Token (Issuer)"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "must return `200 Success` status",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "must return `200 Success` status",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:1)"
+            }
+          },
+          {
+            "assertion": "response body must include non-empty access_token",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "response body must include non-empty access_token",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:1)"
+            }
+          },
+          {
+            "assertion": "response body must represent `Bearer` token",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 2,
+              "test": "response body must represent `Bearer` token",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:3:1)"
+            }
+          },
+          {
+            "assertion": "returned token must expire in the future",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 3,
+              "test": "returned token must expire in the future",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:4:1)"
+            }
+          },
+          {
+            "assertion": "`access_token` persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 4,
+              "test": "`access_token` persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:5:1)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "36535263-d890-4ea3-8509-99258391b99f",
+        "cursor": {
+          "ref": "9d15ce8e-2ba9-4cae-9eab-08bca4766b86",
+          "length": 9,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "fb124f30-8937-4a6b-b92d-215701b7a816"
+        },
+        "item": {
+          "id": "36535263-d890-4ea3-8509-99258391b99f",
+          "name": "Get Access Token (Verifier)"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "must return `200 Success` status",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "must return `200 Success` status",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:2)"
+            }
+          },
+          {
+            "assertion": "response body must include non-empty access_token",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "response body must include non-empty access_token",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:2)"
+            }
+          },
+          {
+            "assertion": "response body must represent `Bearer` token",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 2,
+              "test": "response body must represent `Bearer` token",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:3:2)"
+            }
+          },
+          {
+            "assertion": "returned token must expire in the future",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 3,
+              "test": "returned token must expire in the future",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:4:2)"
+            }
+          },
+          {
+            "assertion": "`access_token` persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 4,
+              "test": "`access_token` persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:5:2)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "9f84b03a-b58c-45ad-810f-c6a6633d511f",
+        "cursor": {
+          "ref": "08fc02b3-2272-454c-b6b5-d53b9c121873",
+          "length": 9,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "e6fc4713-d9d7-4d6c-b5d5-093059e9761a"
+        },
+        "item": {
+          "id": "9f84b03a-b58c-45ad-810f-c6a6633d511f",
+          "name": "Get Organization DIDs (Issuer)"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "`issuer_access_token` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "`issuer_access_token` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:1:3)"
+            }
+          },
+          {
+            "assertion": "Status code is 200",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 1,
+              "test": "Status code is 200",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:2:3)"
+            }
+          },
+          {
+            "assertion": "must include valid JSON response body",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 2,
+              "test": "must include valid JSON response body",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:3:3)"
+            }
+          },
+          {
+            "assertion": "didDocument must be present in response body",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 3,
+              "test": "didDocument must be present in response body",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:4:3)"
+            }
+          },
+          {
+            "assertion": "alsoKnownAs MUST be present",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 4,
+              "test": "alsoKnownAs MUST be present",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:5:3)"
+            }
+          },
+          {
+            "assertion": "alsoKnownAs MUST be an array",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 5,
+              "test": "alsoKnownAs MUST be an array",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:6:3)"
+            }
+          },
+          {
+            "assertion": "alsoKnownAs values MUST be unique",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 6,
+              "test": "alsoKnownAs values MUST be unique",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:7:3)"
+            }
+          },
+          {
+            "assertion": "alsoKnownAs[1] must be present",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 7,
+              "test": "alsoKnownAs[1] must be present",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:8:3)"
+            }
+          },
+          {
+            "assertion": "verification method controller must match did subject",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 8,
+              "test": "verification method controller must match did subject",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:9:3)"
+            }
+          },
+          {
+            "assertion": "`credential_issuer_id` persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 9,
+              "test": "`credential_issuer_id` persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:10:3)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "6ef8cc2b-ccf0-497e-b24d-cf3bc99d93c5",
+        "cursor": {
+          "ref": "9cd05b88-5570-49a0-9589-585663742972",
+          "length": 9,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "125a1fc0-293d-455a-be72-67f9b97c5c14"
+        },
+        "item": {
+          "id": "6ef8cc2b-ccf0-497e-b24d-cf3bc99d93c5",
+          "name": "Get Organization DIDs (Verifier)"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Status code is 200",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:4)"
+            }
+          },
+          {
+            "assertion": "Issuer makes unauthenticated discovery of verifiers exchange endpoint. `verifier_exchange_endpoint` is persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "Issuer makes unauthenticated discovery of verifiers exchange endpoint. `verifier_exchange_endpoint` is persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:4)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "3b3df016-62c5-41da-9119-b6d4e9d0a353",
+        "cursor": {
+          "ref": "c8f6e7ce-a793-4250-bf29-83e3dc9367db",
+          "length": 9,
+          "cycles": 1,
+          "position": 4,
+          "iteration": 0,
+          "httpRequestId": "abe6b887-041e-4aa3-9aa8-ac31cd757cb7"
+        },
+        "item": {
+          "id": "3b3df016-62c5-41da-9119-b6d4e9d0a353",
+          "name": "Issue Credential"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "`issuer_access_token` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "`issuer_access_token` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:1:5)"
+            }
+          },
+          {
+            "assertion": "`credential_issuer_id` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 1,
+              "test": "`credential_issuer_id` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:2:5)"
+            }
+          },
+          {
+            "assertion": "must return `201 Created` status",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 2,
+              "test": "must return `201 Created` status",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:3:5)"
+            }
+          },
+          {
+            "assertion": "`verifiable_credential` persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 3,
+              "test": "`verifiable_credential` persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:4:5)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ffaded9d-9183-4f30-9492-5d6a38ed7a9c",
+        "cursor": {
+          "ref": "a266748b-04d8-4932-9755-9fe2025f8f14",
+          "length": 9,
+          "cycles": 1,
+          "position": 5,
+          "iteration": 0,
+          "httpRequestId": "5ea5bfb5-9cf3-4b5f-b10c-acbbea396935"
+        },
+        "item": {
+          "id": "ffaded9d-9183-4f30-9492-5d6a38ed7a9c",
+          "name": "Initiate Exchange"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "`verifier_access_token` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "`verifier_access_token` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:1:6)"
+            }
+          },
+          {
+            "assertion": "must return `200 Success` status",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 1,
+              "test": "must return `200 Success` status",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:2:6)"
+            }
+          },
+          {
+            "assertion": "response must include 'domain' property",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 2,
+              "test": "response must include 'domain' property",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:3:6)"
+            }
+          },
+          {
+            "assertion": "response must include 'challenge' property",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 3,
+              "test": "response must include 'challenge' property",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:4:6)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "99fb3c27-5a86-4bf1-852c-126d15873b69",
+        "cursor": {
+          "ref": "5e48d9ac-1ce5-4e7c-bfbd-da57c40df87d",
+          "length": 9,
+          "cycles": 1,
+          "position": 6,
+          "iteration": 0,
+          "httpRequestId": "5261e928-13ae-4faf-9998-3f0ecb5fad69"
+        },
+        "item": {
+          "id": "99fb3c27-5a86-4bf1-852c-126d15873b69",
+          "name": "Sign Presentation"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "`issuer_access_token` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "`issuer_access_token` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:1:7)"
+            }
+          },
+          {
+            "assertion": "`credential_issuer_id` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 1,
+              "test": "`credential_issuer_id` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:2:7)"
+            }
+          },
+          {
+            "assertion": "`verifiable_credential` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 2,
+              "test": "`verifiable_credential` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:3:7)"
+            }
+          },
+          {
+            "assertion": "`domain` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 3,
+              "test": "`domain` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:4:7)"
+            }
+          },
+          {
+            "assertion": "`challenge` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 4,
+              "test": "`challenge` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:5:7)"
+            }
+          },
+          {
+            "assertion": "must return `201 Success` status",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 5,
+              "test": "must return `201 Success` status",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:6:7)"
+            }
+          },
+          {
+            "assertion": "`verifiable_presentation` persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 6,
+              "test": "`verifiable_presentation` persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:7:7)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "afacb22e-0c92-45f7-ac6a-29e9a67b7ff4",
+        "cursor": {
+          "ref": "b4aa048d-0bef-4bc6-83b3-386cb1ce914c",
+          "length": 9,
+          "cycles": 1,
+          "position": 7,
+          "iteration": 0,
+          "httpRequestId": "c28d2973-b877-4025-9881-5efeb6fd9924"
+        },
+        "item": {
+          "id": "afacb22e-0c92-45f7-ac6a-29e9a67b7ff4",
+          "name": "Complete Exchange"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "`verifier_access_token` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "`verifier_access_token` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:1:8)"
+            }
+          },
+          {
+            "assertion": "must return `200 Success` status",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 1,
+              "test": "must return `200 Success` status",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:2:8)"
+            }
+          },
+          {
+            "assertion": "verification response should be 'true'",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 2,
+              "test": "verification response should be 'true'",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:3:8)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "506c0eaa-a471-4e29-8496-67e4bf8a26bb",
+        "cursor": {
+          "ref": "53d20ba1-ffa2-4a68-b085-ad0d01bb90ca",
+          "length": 9,
+          "cycles": 1,
+          "position": 8,
+          "iteration": 0,
+          "httpRequestId": "9af6b130-c77f-4931-8548-526cd0fb7765"
+        },
+        "item": {
+          "id": "506c0eaa-a471-4e29-8496-67e4bf8a26bb",
+          "name": "Verify Presentation"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "`verifier_access_token` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "`verifier_access_token` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:1:9)"
+            }
+          },
+          {
+            "assertion": "`verifiable_presentation` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 1,
+              "test": "`verifiable_presentation` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:2:9)"
+            }
+          },
+          {
+            "assertion": "`domain` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 2,
+              "test": "`domain` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:3:9)"
+            }
+          },
+          {
+            "assertion": "`challenge` collection variable must be set",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 3,
+              "test": "`challenge` collection variable must be set",
+              "message": "expected '' not to be empty",
+              "stack": "AssertionError: expected '' not to be empty\n   at Object.eval sandbox-script.js:4:9)"
+            }
+          },
+          {
+            "assertion": "must return `200 Success` status",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 4,
+              "test": "must return `200 Success` status",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:5:9)"
+            }
+          },
+          {
+            "assertion": "verification response should be 'true'",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 5,
+              "test": "verification response should be 'true'",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:6:9)"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
