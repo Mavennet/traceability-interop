@@ -5,8 +5,7 @@ post:
   tags:
     - Presentations
   security:
-    - OAuth2:
-        - 'prove:presentations'
+    - OAuth2: []
   requestBody:
     description: Parameters for creating the presentation.
     content:
@@ -24,15 +23,20 @@ post:
                     type:
                       type: string
                       description: A linked data suite proof type
-                      enum: ["Ed25519Signature2018", "JsonWebSignature2020"]
-                      example: "JsonWebSignature2020"
+                      enum: ["Ed25519Signature2018"]
+                      example: Ed25519Signature2018
   responses:
     "201":
       description: Expected response to a valid request
       content:
         application/json:
           schema:
-            $ref: "../schemas/SerializedVerifiablePresentation.yml"
+            type: object
+            required:
+              - verifiablePresentation
+            properties:
+              verifiablePresentation:
+                $ref: "../schemas/SerializedVerifiablePresentation.yml"
     '401':
       $ref: '../responses/Unauthenticated.yml'
     '403':
