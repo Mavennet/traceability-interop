@@ -1,0 +1,453 @@
+{
+  "collection": {
+    "info": {
+      "_postman_id": "7dc3b813-2b8d-4ee4-95af-6be68b4e0112",
+      "name": "Workflow Tutorial",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "id": "320ea24a-36e5-4f1d-b751-1e02773958e0",
+        "name": "Holder gets Verifier's Token",
+        "request": {
+          "url": {
+            "host": [
+              "{{TOKEN_ENDPOINT}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "urlencoded",
+            "urlencoded": [
+              {
+                "key": "audience",
+                "value": "{{TOKEN_AUDIENCE}}"
+              },
+              {
+                "key": "client_id",
+                "value": "{{CLIENT_ID}}"
+              },
+              {
+                "key": "client_secret",
+                "value": "{{CLIENT_SECRET}}"
+              },
+              {
+                "key": "grant_type",
+                "value": "client_credentials"
+              },
+              {
+                "key": "scope",
+                "value": "{{CLIENT_SCOPE}}"
+              }
+            ]
+          },
+          "auth": {
+            "type": "noauth",
+            "noauth": []
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "a74f02d4-9e90-42d4-865f-1b00a7a829b6",
+              "type": "text/javascript",
+              "exec": [
+                "// Token requests are expected to return a `200 Success` response code. Any",
+                "// other response code should trigger a failure.",
+                "pm.test(\"must return `200 Success` status\", function() {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// The response should include an `access_token` value - this will be presented",
+                "// to authenticated API endpoints in the `Authentication` header (see the last",
+                "// testing code block for details on how this is persisted).",
+                "pm.test(\"response body must include non-empty access_token\", function () {",
+                "    const { access_token } = pm.response.json()",
+                "    pm.expect(access_token).to.be.a('string').that.is.not.empty;",
+                "});",
+                "",
+                "// The type of `access_token` returned by the token request is expected to be",
+                "// `Bearer`.",
+                "pm.test(\"response body must represent `Bearer` token\", function() {",
+                "    const { token_type } = pm.response.json()",
+                "    pm.expect(token_type).to.equal(\"Bearer\");",
+                "});",
+                "",
+                "// The returned data includes an `expires_in` field that indicates time until",
+                "// token expiration. Validate that this value is a whole number greater than",
+                "// zero, as anything less than or equal to zero means that the `access_token`",
+                "// is already expired.",
+                "pm.test(\"returned token must expire in the future\", function() {",
+                "    const { expires_in } = pm.response.json()",
+                "    pm.expect(expires_in).to.be.above(0);",
+                "});",
+                "",
+                "// The returned `access_token` value is persisted as a Postman collection",
+                "// variable that can be accessed by other requests in the collection by calling",
+                "// `pm.collectionVariables.get(\"issuer_access_token\")`.",
+                "pm.test(\"`access_token` persisted to collectionVariables\", function() {",
+                "    const { access_token } = pm.response.json()",
+                "    pm.collectionVariables.set(\"verifier_access_token\", access_token);",
+                "});"
+              ],
+              "_lastExecutionId": "0353ac03-6b52-49f0-bff0-b0181a977b70"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ba98d809-8475-4b41-9a16-1fdeb68d40e7",
+        "name": "Get Verifier Organization DIDs",
+        "request": {
+          "url": {
+            "path": [
+              "identifiers",
+              "{{ORGANIZATION_DID_WEB}}"
+            ],
+            "host": [
+              "{{API_BASE_URL}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "GET",
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{verifier_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "635cdffd-5e5e-483f-8f3d-cd50f7568149",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"Issuer makes unauthenticated discovery of verifiers exchange endpoint. `verifier_exchange_endpoint` is persisted to collectionVariables\", function() {",
+                "    const { service } = pm.response.json().didDocument;",
+                "    pm.collectionVariables.set(\"verifier_exchange_endpoint\", service[0].serviceEndpoint);",
+                "});",
+                "",
+                ""
+              ],
+              "_lastExecutionId": "b8c53c29-ef08-4c87-9a70-ec7c6b3f26bd"
+            }
+          }
+        ],
+        "protocolProfileBehavior": {
+          "disabledSystemHeaders": {}
+        }
+      },
+      {
+        "id": "43f4ee21-28cf-4242-bdaf-68cbc337bdad",
+        "name": "Presentation",
+        "request": {
+          "url": {
+            "path": [
+              "presentations"
+            ],
+            "host": [
+              "{{verifier_exchange_endpoint}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Accept",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"@context\": [\n        \"https://www.w3.org/2018/credentials/v1\",\n        \"https://w3id.org/traceability/v1\"\n    ],\n    \"type\": [\n        \"VerifiablePresentation\",\n        \"TraceablePresentation\"\n    ],\n    \"workflow\": {\n        \"definition\": [\n            \"https://w3id.org/traceability/#import-intention\"\n        ],\n        \"instance\": [\n            \"urn:uuid:{{$randomUUID}}\"\n        ]\n    },\n    \"verifiableCredential\": [\n        {\n            \"@context\": [\n                \"https://www.w3.org/2018/credentials/v1\",\n                \"https://w3id.org/traceability/v1\"\n            ],\n            \"id\": \"urn:uuid:55791fb7-058f-409a-8a32-e6229n159144\",\n            \"type\": [\n                \"VerifiableCredential\",\n                \"IntentToImportCredential\"\n            ],\n            \"issuer\": {\n                \"type\": [\n                    \"Organization\"\n                ],\n                \"id\": \"did:key:z6MktHQo3fRRohk44dsbE76CuiTpBmyMWq2VVjvV6aBSeE3U\",\n                \"name\": \"Generic Motors of America\",\n                \"location\": {\n                    \"type\": [\n                        \"Place\"\n                    ],\n                    \"address\": {\n                        \"type\": [\n                            \"PostalAddress\"\n                        ],\n                        \"streetAddress\": \"12 Generic Motors Dr\",\n                        \"addressLocality\": \"Detroit\",\n                        \"addressRegion\": \"Michigan\",\n                        \"postalCode\": \"48232-5170\",\n                        \"addressCountry\": \"USA\"\n                    }\n                }\n            },\n            \"issuanceDate\": \"2022-03-03T15:20:00Z\",\n            \"credentialSubject\": {\n                \"type\": [\n                    \"IntentToImport\"\n                ],\n                \"importIntent\": \"By issuing this Intent to Import Verifiable Credential and presenting it in a Traceable Presentation to US CBP, the issuing organization initiates a digital procedure for importing goods into the United States.\"\n            },\n            \"proof\": {\n                \"type\": \"Ed25519Signature2018\",\n                \"created\": \"2023-05-02T17:55:58Z\",\n                \"verificationMethod\": \"did:key:z6MktHQo3fRRohk44dsbE76CuiTpBmyMWq2VVjvV6aBSeE3U#z6MktHQo3fRRohk44dsbE76CuiTpBmyMWq2VVjvV6aBSeE3U\",\n                \"proofPurpose\": \"assertionMethod\",\n                \"jws\": \"eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..aXFUeuRifAA48uRRd1YNaAGSJOsav-Pk83yYlu7J_jwsy5V1BuzW33zvyCF8kKXMVv6OAGzfrbFHtKBOPyOYAA\"\n            }\n        }\n    ]\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "type": "string",
+                "value": "{{verifier_access_token}}",
+                "key": "token"
+              }
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "2ba5992f-9b8e-4b86-be8a-81a40b2dc9c1",
+              "type": "text/javascript",
+              "exec": [
+                "// The expected response code for a \"Presentations Available\" request is",
+                "// `200 Success`.",
+                "pm.test(\"must return `200 Success` status\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"Content-Type header is application/json\", () => {",
+                "  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+                "});",
+                ""
+              ],
+              "_lastExecutionId": "eb47e5cf-dd28-49a6-ab82-6a1111f8f94f"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 3,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 9,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequests": {
+        "total": 3,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 3,
+        "pending": 0,
+        "failed": 3
+      },
+      "tests": {
+        "total": 3,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 9,
+        "pending": 0,
+        "failed": 9
+      },
+      "testScripts": {
+        "total": 6,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequestScripts": {
+        "total": 3,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 0,
+      "responseMin": 0,
+      "responseMax": 0,
+      "responseSd": 0,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1713572425341,
+      "completed": 1713572425453
+    },
+    "executions": [
+      {
+        "id": "320ea24a-36e5-4f1d-b751-1e02773958e0",
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 3,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "707eb883-8081-4268-bf07-1aae7aede7b5",
+          "httpRequestId": "4bb0dc90-54c7-47fb-bb99-71bc630ad544"
+        },
+        "item": {
+          "id": "320ea24a-36e5-4f1d-b751-1e02773958e0",
+          "name": "Holder gets Verifier's Token"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "must return `200 Success` status",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "must return `200 Success` status",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:1)"
+            }
+          },
+          {
+            "assertion": "response body must include non-empty access_token",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "response body must include non-empty access_token",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:1)"
+            }
+          },
+          {
+            "assertion": "response body must represent `Bearer` token",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 2,
+              "test": "response body must represent `Bearer` token",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:3:1)"
+            }
+          },
+          {
+            "assertion": "returned token must expire in the future",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 3,
+              "test": "returned token must expire in the future",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:4:1)"
+            }
+          },
+          {
+            "assertion": "`access_token` persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 4,
+              "test": "`access_token` persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:5:1)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ba98d809-8475-4b41-9a16-1fdeb68d40e7",
+        "cursor": {
+          "ref": "4e68fa2b-eccd-4bcd-afe6-54d63ef06ce9",
+          "length": 3,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "c327a404-ad3d-42dc-9a44-772a169bcb66"
+        },
+        "item": {
+          "id": "ba98d809-8475-4b41-9a16-1fdeb68d40e7",
+          "name": "Get Verifier Organization DIDs"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Status code is 200",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:2)"
+            }
+          },
+          {
+            "assertion": "Issuer makes unauthenticated discovery of verifiers exchange endpoint. `verifier_exchange_endpoint` is persisted to collectionVariables",
+            "skipped": false,
+            "error": {
+              "name": "JSONError",
+              "index": 1,
+              "test": "Issuer makes unauthenticated discovery of verifiers exchange endpoint. `verifier_exchange_endpoint` is persisted to collectionVariables",
+              "message": "Unexpected token u in JSON at position 0",
+              "stack": "JSONError: Unexpected token u in JSON at position 0\n   at Object.eval sandbox-script.js:2:2)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "43f4ee21-28cf-4242-bdaf-68cbc337bdad",
+        "cursor": {
+          "ref": "604676f0-1b72-4fd1-8189-df4d7b6fe5c5",
+          "length": 3,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "b47dd3c6-a92d-4939-82a5-59d446769a5c"
+        },
+        "item": {
+          "id": "43f4ee21-28cf-4242-bdaf-68cbc337bdad",
+          "name": "Presentation"
+        },
+        "response": {},
+        "assertions": [
+          {
+            "assertion": "must return `200 Success` status",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "must return `200 Success` status",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:3)"
+            }
+          },
+          {
+            "assertion": "Content-Type header is application/json",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 1,
+              "test": "Content-Type header is application/json",
+              "message": "the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string",
+              "stack": "AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string\n   at Object.eval sandbox-script.js:2:3)"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
