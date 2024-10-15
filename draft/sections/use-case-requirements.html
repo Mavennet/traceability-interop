@@ -8,6 +8,35 @@
     border supply chain data interchange.
   </p>
 
+
+  <section id="initial-party-binding">
+    <h3>Initial Party Binding</h3>
+    <p>
+      The following requirements are necessary for the Verifier to establish binding, enabling the Holder to submit data:
+    </p>
+    <ul>
+      <li>
+        The Verifier MUST establish the <a href="https://www.rfc-editor.org/rfc/rfc6749.html">OAuth 2.0</a> binding by
+        providing client ID and secret to the Holder.
+      </li>
+      <li>
+        The Verifier MUST provide an <a href="https://w3c-ccg.github.io/traceability-interop/openapi/#auth">authentication</a>
+        endpoint for the Holder to authenticate and obtain an access token.
+      </li>
+      <li>
+        The Verifier MUST provide a <a href="https://w3c-ccg.github.io/traceability-interop/openapi/#post-/presentations">
+        presentations</a> endpoint for the Holder to submit presentations.
+      </li>
+    </ul>
+    <p>
+      Binding data is provided out-of-band between parties. The binding data MAY conveniently be exchanged in an environment file.
+    </p>
+    <p>
+      This exchange of binding information MAY be done bi-directionally between parties, enabling bi-directional flow of data.
+    </p>
+  </section>
+
+
   <section>
     <h4>Identifier Discovery</h4>
 
@@ -38,11 +67,6 @@ This document defines the discoverability feature
 necessary to complete integration tests in postman with authentication.
 </p>
 
-<p>
-The current APIs exploit the well known DID configuration,
-which has some limitations, most notably regarding multi-tenant platforms.
-</p>
-
 <section>
 <h5>Integration Considerations</h5>
 <p>
@@ -69,16 +93,13 @@ Each organization DID will have DID URLs for <code>assertionMethod</code> and <c
 </p>
 
 <p>
-Each DID URL for a given relationship will have a single supported signature suite type (Ed25519Signature2018, JsonWebSignature2020).
-</p>
-
-<p>
   As a representative of an organization, I can discover another organization's supported API features from their <code>did:web</code>.
 </p>
 
 </section>
 
-<section>
+
+  <section>
   <h5>Discovering Organizational Identifiers</h5>
 
 <p>
@@ -92,14 +113,14 @@ HTTP GET https://platform.example/organization/123/did.json => didDocument.json
 </pre>
 
  <p>
-2. Review the <code>serviceEndpoint</code>, <code>assertionMethod</code>, and <code>authentication</code> sections of the DID document.
+2. Review the <code>serviceEndpoint</code>, and <code>assertionMethod</code> sections of the DID document.
  </p>
 <section>
   <h5>service</h5>
 
 
 <p>
-The serivce block provides a means of communicating or interacting with the DID subject or associated entities via one or more service endpoints.
+The service block provides a means of communicating or interacting with the DID subject or associated entities via one or more service endpoints.
 </p>
 
   <p>
@@ -110,7 +131,7 @@ The serivce block provides a means of communicating or interacting with the DID 
 This entry MUST be present.
 </p>
 <p>
-This entry MUST have an element of type <code>TraceabilityAPI</code> with a <code>serviceEndpoint</code> URL for a VC-API that supports presentation exchange.
+This entry MUST have an element of type <code>TraceabilityAPI</code> with a <code>serviceEndpoint</code> URL for an endpoint which supports presentation exchange.
 </p>
 
   <p>For example:</p>
@@ -119,44 +140,21 @@ This entry MUST have an element of type <code>TraceabilityAPI</code> with a <cod
 "service": [
   {
     "id": "did:web:platform.example:organization:123#traceability-api",
-    "type": "TraceabilityAPI",
+    "type": ["TraceabilityAPI"],
     "serviceEndpoint": "https://platform.example/organization/123"
   }
 ]
 </pre>
 
-<p>This definition implies the following endpoints:</p>
+<p>This definition implies that a <code>/presentations</code> endpoint is available for data submissions:</p>
 
 <pre class="example">
-https://platform.example/organization/123/credentials/issue
-https://platform.example/organization/123/credentials/verify
-https://platform.example/organization/123/presentations/prove
-https://platform.example/organization/123/presentations/verify
-https://platform.example/organization/123/presentations/available
-https://platform.example/organization/123/presentations/submissions
 https://platform.example/organization/123/presentations
 </pre>
 
 <p>
-These endpoints always require the application to be authenticated:
-</p>
+This endpoint must be secured as defined in <a href="./#authorization">Authentication</a>.
 
-<pre class="example">
-https://platform.example/organization/123/credentials/issue
-https://platform.example/organization/123/presentations/prove
-</pre>
-
-<p>
-These endpoints do not always require the application to be authenticated:
-</p>
-
-<pre class="example">
-https://platform.example/organization/123/presentations/available
-https://platform.example/organization/123/presentations/submissions
-</pre>
-
-<p class="advisement">
-Implementations are encouraged to require authentication for all endpoints.
 </p>
 
 </section>
@@ -164,43 +162,47 @@ Implementations are encouraged to require authentication for all endpoints.
 <section>
   <h5>assertionMethod</h5>
 <p>
-The set of supported <code>assertionMethod</code> DID URLs for the organization.
+  The <code>assertionMethod</code> references public key material used by the organization for issuing Verifiable Credentials.
 </p>
 
 <p>
 See <a href="https://www.w3.org/TR/did-core/#assertion">assertionMethod</a>.
 </p>
+
+<p>
+  This entry MUST be present.
+</p>
+
+<p>
+  This entry MUST have at least one entry referencing an available <code>verificationMethod</code>.
+</p>
+
 </section>
 
 <section>
-  <h5>authentication</h5>
-<p>
-The set of supported <code>authentication</code> DID URLs for the organization.
-</p>
+  <h5>verificationMethod</h5>
+
+  <p>
+    The <code>verificationMethod</code> contains cryptographic material for public keys.
+  </p>
+
+  <p>
+    See <a href="https://www.w3.org/TR/did-core/#verification-methods">verificationMethod</a>.
+  </p>
 
 <p>
-See <a href="https://www.w3.org/TR/did-core/#authentication">authentication</a>.
+  The <code>didDocument</code> MUST contain at least one <code>verificationMethod</code> element.
 </p>
-</section>
 
- <p>
-  The <code>didDocument</code> MAY contain a <code>verificationMethod</code> section,
-  which MAY be used to support <code>did:web</code> based verification relationships.
- </p>
 <p>
   The <code>didDocument</code> MUST NOT contain <code>verificationMethods</code> where the controller is different from the DID Subject.
 </p>
 
 <p>
-  All <code>Ed25519VerificationKey2018</code> types support <code>Ed25519Siganture2018</code>.
 </p>
 
 <p>
-  All <code>JsonWebKey2020</code> types support <code>JsonWebSignature2020</code> AND <code>VC-JWT</code>.
-</p>
-
-<p>
-  In this example, the organization suports authentication and credential issuance with the same two keys, identified via the DID URLs in the relationships:
+  All <code>JsonWebKey</code> types support securing with JOSE, as described in <a href="https://w3c.github.io/vc-jose-cose/#secure-with-jose">W3C VC-JOSE-COSE</a>.
 </p>
 
 <pre class="example">
@@ -210,23 +212,27 @@ See <a href="https://www.w3.org/TR/did-core/#authentication">authentication</a>.
       "https://w3id.org/traceability/v1"
     ],
     "id": "did:web:platform.example:organization:123",
-    "alsoKnownAs": [
-      "https://platform.example/organization/123",
-      "did:key:z6MksSdhqJH3VvzcX8WP6VbdB85e6T7aaL5yLLYeJLJrto8V",
-      "did:key:z82LkpR3sPw87xdgs72J3EzGXChciBmhV6ukkbeAGFtCpauXHiEwtM2tyDcphRnLmKsB1fi"
-    ],
     "assertionMethod": [
-      "did:key:z6MksSdhqJH3VvzcX8WP6VbdB85e6T7aaL5yLLYeJLJrto8V#z6MksSdhqJH3VvzcX8WP6VbdB85e6T7aaL5yLLYeJLJrto8V",
-      "did:key:z82LkpR3sPw87xdgs72J3EzGXChciBmhV6ukkbeAGFtCpauXHiEwtM2tyDcphRnLmKsB1fi#z82LkpR3sPw87xdgs72J3EzGXChciBmhV6ukkbeAGFtCpauXHiEwtM2tyDcphRnLmKsB1fi"
+      "did:web:platform.example:organization:123#key1"
     ],
-     "authentication": [
-      "did:key:z6MksSdhqJH3VvzcX8WP6VbdB85e6T7aaL5yLLYeJLJrto8V#z6MksSdhqJH3VvzcX8WP6VbdB85e6T7aaL5yLLYeJLJrto8V",
-      "did:key:z82LkpR3sPw87xdgs72J3EzGXChciBmhV6ukkbeAGFtCpauXHiEwtM2tyDcphRnLmKsB1fi#z82LkpR3sPw87xdgs72J3EzGXChciBmhV6ukkbeAGFtCpauXHiEwtM2tyDcphRnLmKsB1fi"
+    "verificationMethod": [
+      {
+        "id": "https://university.example/issuers/565049#key-123",
+        "type": "JsonWebKey",
+        "controller": "https://university.example/issuers/565049",
+        "publicKeyJwk": {
+          "kty": "EC",
+          "crv": "P-384",
+          "alg": "ES384",
+          "x": "PxgAmVYOQvSNcMYL2tOzoLwSWn4Ta3tIMPEUKR8pxeb-gmR11-DyKHBoIiY-2LhM",
+          "y": "BZEBTkImVdpwvxR9THIRw16eblnj5-tZa7m-ww5uVd4kyPJNRoWUn2aT9ZuarAe-"
+        }
+      }
     ],
     "service": [
       {
         "id": "did:web:platform.example:organization:123#traceability-api",
-        "type": "TraceabilityAPI",
+        "type": ["TraceabilityAPI"],
         "serviceEndpoint": "https://platform.example/organization/123"
       }
     ]
@@ -236,58 +242,4 @@ See <a href="https://www.w3.org/TR/did-core/#authentication">authentication</a>.
 </section>
   </section>
 
-  <section>
-    <h4>Credential Discovery</h4>
-    <dl class="termlist">
-      <p>
-        This API specification describes how existing web standards can be
-        applied to the credential discovery use case for supply chain actors and
-        products.
-      </p>
-      <p>Examples of credential discovery include:</p>
-      <ul>
-        <li>
-          In order to apply for trade finance credit, provided credentials must
-          include Bill Of Lading, Commercial Invoice, and Packing List.
-        </li>
-        <li>Booking requests may include priority shipper certificate.</li>
-        <li>Supplier tenders must include Anti Child Labor certificate.</li>
-      </ul>
-    </dl>
-    <p>
-      Endpoints of interest: <a href="#api-spec">Presentation Notification</a>
-    </p>
-    <p class="issue">Add support for credential manifest?</p>
-    <p class="issue">Add support for presentation definition?</p>
-  </section>
-
-  <section>
-    <h4>Credential Exchange</h4>
-    <dl class="termlist">
-      <p>
-        This API specification describes how existing web standards can be
-        applied to the credential exchange use case for supply chain actors and
-        products.
-      </p>
-    </dl>
-    <p>Examples of credential exchange include:</p>
-    <ul>
-      <li>
-        A Carrier having issuing a Bill Of Lading, sending securely as a
-        Verifiable Presentation over an authenticated channel to the consignment
-        shipper.
-      </li>
-      <li>
-        Shipper presenting a Mill Test Report, proving product quality ahead of
-        a shipment.
-      </li>
-      <li>
-        Customs broker submitting import-related credentials to customs
-        authority.
-      </li>
-    </ul>
-    <p>
-      Endpoints of interest: <a href="#api-spec">Presentation Submission</a>
-    </p>
-  </section>
 </section>
